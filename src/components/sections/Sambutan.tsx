@@ -60,7 +60,7 @@ export default function Testimonial() {
   };
 
   return (
-    <section className="py-12 md:py-20 bg-gray-50">
+    <section className="py-12 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 md:px-8">
         <div className="relative max-w-7xl mx-auto pt-20 md:pt-12 lg:pt-16">
           {testimonials.map((item: Testimonial, index: number) => (

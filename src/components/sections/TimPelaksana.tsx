@@ -4,58 +4,84 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const OrangTuaPeduli = () => {
+const TimPelaksana = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // ⏱️ ATUR WAKTU AUTOPLAY DI SINI (dalam milidetik)
+  // 3000 = 3 detik, 5000 = 5 detik, dst.
   const AUTOPLAY_INTERVAL = 6000; // 👈 UBAH ANGKA INI UNTUK MENGATUR WAKTU
 
   const teamMembers = [
     {
-      name: "Muh. Yasin Limpo",
-      role: "Ketua Komunitas",
-      image: "/images/komunitas/1.svg",
+      name: "Dr. Ulfa Tenri Batari, M.pd.",
+      role: "Inovator",
+      image: "/images/tim-pelaksana/1.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Harifin Naba",
-      role: "Sekretaris Komunitas",
-      image: "/images/komunitas/2.svg",
+      name: "Nurliah Syahrul, S.Pd., M.Pd.",
+      role: "Fasilitator",
+      image: "/images/tim-pelaksana/2.svg",
       bgColor: "bg-gray-800",
     },
     {
-      name: "Indriana Tajuddin, SE.",
-      role: "Bendahara Komunitas",
-      image: "/images/komunitas/3.svg",
+      name: "Dr. Astuti N Yudhar, MM., M.Pd.",
+      role: "Fasilitator",
+      image: "/images/tim-pelaksana/3.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Rewata",
-      role: "Koordinator Bid. Organisasi",
-      image: "/images/komunitas/4.svg",
+      name: "Drs. H. Syahruddin M, M.Si.",
+      role: "Fasilitator",
+      image: "/images/tim-pelaksana/4.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Hj. Junaerda Ida Ashari",
-      role: "Anggota Bid. Organisasi",
-      image: "/images/komunitas/5.svg",
+      name: "Sahabuddin, S.Pd., M.Pd.",
+      role: "Tim Sosialisasi",
+      image: "/images/tim-pelaksana/5.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Muh. Khairil Anwar",
-      role: "Koordinator Bid. Pendidikan & Pengembangan SDM",
-      image: "/images/komunitas/6.svg",
+      name: "Nur Azizah Syarif, S.Pd., M.Pd.",
+      role: "Tim Sosialisasi",
+      image: "/images/tim-pelaksana/6.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Muh Ridwan, S.Ag.",
-      role: "Koordinator Bid. Humas",
-      image: "/images/komunitas/7.svg",
+      name: "Hamzari Hafid S.Pd., M.Pd.",
+      role: "Tim Video & Publikasi",
+      image: "/images/tim-pelaksana/7.svg",
       bgColor: "bg-gray-900",
     },
     {
-      name: "Dewi Pertiwi Putri",
-      role: "Anggota Bid. Humas",
-      image: "/images/komunitas/8.svg",
+      name: "Hairuddin S.Pd., M.Pd.",
+      role: "Tim Video & Publikasi",
+      image: "/images/tim-pelaksana/8.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Dini Muliasari, S.Pd.",
+      role: "Tim Video & Publikasi",
+      image: "/images/tim-pelaksana/9.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Munandar, S.Pd.",
+      role: "Tim Video & Publikasi",
+      image: "/images/tim-pelaksana/10.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Muh Askary, S.Pd., M.Pd.",
+      role: "Tim App Rukoku",
+      image: "/images/tim-pelaksana/11.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Syahwan Syahadillah HT, S.Kom.",
+      role: "Tim App Rukoku",
+      image: "/images/tim-pelaksana/12.svg",
       bgColor: "bg-gray-900",
     },
   ];
@@ -140,9 +166,9 @@ const OrangTuaPeduli = () => {
             RUKOKU
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Komunitas Orang Tua Peduli
+            Tim Pelaksana Rukoku
             <br />
-            Kabupaten Gowa
+            Dinas Pendidikan Kab. Gowa
           </h2>
         </div>
 
@@ -188,9 +214,11 @@ const OrangTuaPeduli = () => {
                 </div>
 
                 {/* Text Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
-                  <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                  <p className="text-sm opacity-90">{member.role}</p>
+                <div className="absolute bottom-4 left-4 right-4 bg-white/50 backdrop-blur-sm rounded-xl px-4 py-3 shadow text-center">
+                  <h3 className="font-semibold text-gray-900 text-base mb-0.5">
+                    {member.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{member.role}</p>
                 </div>
               </div>
             </CardContent>
@@ -201,4 +229,4 @@ const OrangTuaPeduli = () => {
   );
 };
 
-export default OrangTuaPeduli;
+export default TimPelaksana;

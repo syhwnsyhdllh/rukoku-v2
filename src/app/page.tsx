@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import OrangTuaPeduli from "@/components/sections/OrangTuaPeduli";
 import RukokuSection from "@/components/sections/Rukoku";
 import Sambutan from "@/components/sections/Sambutan";
 import TimEfektifSection from "@/components/sections/TimEfektif";
@@ -12,6 +13,7 @@ export default function Home() {
       <Sambutan />
       <RukokuSection />
       <TimEfektifSection />
+      <OrangTuaPeduli />
     </>
   );
 }

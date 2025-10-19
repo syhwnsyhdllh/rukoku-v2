@@ -1,64 +1,132 @@
-import React from "react";
+"use client";
+import React, { useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Linkedin,
-  Twitter,
-  Instagram,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const OrangTuaPeduli = () => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // ⏱️ ATUR WAKTU AUTOPLAY DI SINI (dalam milidetik)
+  // 3000 = 3 detik, 5000 = 5 detik, dst.
+  const AUTOPLAY_INTERVAL = 3000; // 👈 UBAH ANGKA INI UNTUK MENGATUR WAKTU
+
   const teamMembers = [
-    {
-      name: "Alice Johnson",
-      role: "Chief Executive Officer",
-      description:
-        "Alice is a seasoned leader with over 15 years of experience in driving business growth and innovation.",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-      bgColor: "bg-blue-600",
-      socials: true,
-    },
     {
       name: "Carter Botosh",
       role: "Chief Financial Officer",
-      description: "",
-      image:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+      image: "/images/coba.svg",
       bgColor: "bg-gray-900",
     },
     {
       name: "Phillip Ekstrom",
       role: "Head of Marketing",
-      description: "",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
+      image: "/images/coba.svg",
       bgColor: "bg-gray-800",
     },
     {
       name: "Abram Culhane",
       role: "Head of Design",
-      description: "",
-      image:
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+      image: "/images/coba.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Sarah Mitchell",
+      role: "Head of Operations",
+      image: "/images/coba.svg",
+      bgColor: "bg-gray-900",
+    },
+    {
+      name: "Sarah Mitchell 2",
+      role: "Head of Operations",
+      image: "/images/coba.svg",
       bgColor: "bg-gray-900",
     },
   ];
 
+  const scroll = (direction: "left" | "right") => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const cardElement = container.querySelector(".team-card") as HTMLElement;
+    const cardWidth = cardElement?.offsetWidth || 0;
+    const gap = 20;
+    const scrollAmount = cardWidth + gap;
+
+    if (direction === "left") {
+      container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  // Autoplay Effect
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const autoScroll = setInterval(() => {
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      const currentScroll = container.scrollLeft;
+
+      // Jika sudah di ujung, kembali ke awal
+      if (currentScroll >= maxScrollLeft - 10) {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        scroll("right");
+      }
+    }, AUTOPLAY_INTERVAL);
+
+    // Pause autoplay saat hover
+    const handleMouseEnter = () => clearInterval(autoScroll);
+    const handleMouseLeave = () => {
+      // Restart autoplay setelah mouse leave
+      const newAutoScroll = setInterval(() => {
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+        const currentScroll = container.scrollLeft;
+
+        if (currentScroll >= maxScrollLeft - 10) {
+          container.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          scroll("right");
+        }
+      }, AUTOPLAY_INTERVAL);
+
+      return () => clearInterval(newAutoScroll);
+    };
+
+    container.addEventListener("mouseenter", handleMouseEnter);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      clearInterval(autoScroll);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <section className="mx-auto px-4 sm:px-6 lg:px-48 py-12 lg:py-16">
+      <style jsx>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-10">
         <div className="flex-1">
           <div className="inline-block px-4 py-1.5 border border-gray-300 rounded-full text-sm font-medium mb-4">
-            EXPERTISE
+            RUKOKU
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-            Explore our comprehensive
+            Komunitas Orang Tua Peduli
             <br />
-            service offerings
+            Kabupaten Gowa
           </h2>
         </div>
 
@@ -67,79 +135,53 @@ const OrangTuaPeduli = () => {
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full w-12 h-12 border-2 hover:bg-blue-600 hover:text-white hover:border-blue-600"
+            className="rounded-full w-12 h-12 border-2 hover:bg-[#046DC2] hover:text-white hover:border-blue-600 transition-colors"
+            onClick={() => scroll("left")}
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
           <Button
-            variant="default"
+            variant="outline"
             size="icon"
-            className="rounded-full w-12 h-12 bg-blue-600 hover:bg-blue-700"
+            className="rounded-full w-12 h-12 hover:bg-[#046DC2] hover:text-white hover:border-blue-600 transition-colors"
+            onClick={() => scroll("right")}
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
         </div>
       </div>
 
-      {/* Team Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* Team Cards Slider */}
+      <div
+        ref={scrollContainerRef}
+        className="flex gap-5 overflow-x-auto hide-scrollbar scroll-smooth snap-x snap-mandatory"
+      >
         {teamMembers.map((member, index) => (
           <Card
             key={index}
-            className={`overflow-hidden border-0 ${member.bgColor} ${
-              index === 0 ? "text-white" : ""
-            }`}
+            className={`team-card flex-shrink-0 w-[85vw] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] overflow-hidden border-0 ${member.bgColor} snap-start`}
           >
             <CardContent className="p-0">
-              {index === 0 ? (
-                // First Card - Text Only
-                <div className="p-6 h-full flex flex-col justify-between min-h-[320px]">
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                    <p className="text-sm font-medium mb-3 opacity-90">
-                      {member.role}
-                    </p>
-                    <p className="text-sm opacity-80 leading-relaxed">
-                      {member.description}
-                    </p>
-                  </div>
-
-                  {/* Social Icons */}
-                  <div className="flex gap-4 mt-6">
-                    <a href="#" className="hover:opacity-70 transition-opacity">
-                      <Linkedin className="h-5 w-5" />
-                    </a>
-                    <a href="#" className="hover:opacity-70 transition-opacity">
-                      <Twitter className="h-5 w-5" />
-                    </a>
-                    <a href="#" className="hover:opacity-70 transition-opacity">
-                      <Instagram className="h-5 w-5" />
-                    </a>
-                  </div>
+              <div className="relative group">
+                <div className="aspect-[3/4] overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
-              ) : (
-                // Other Cards - Image with Overlay
-                <div className="relative group">
-                  <div className="aspect-[3/4] overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
 
-                  {/* Text Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
-                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                    <p className="text-sm opacity-90">{member.role}</p>
-                  </div>
+                {/* Text Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
+                  <h3 className="text-lg font-bold mb-1">{member.name}</h3>
+                  <p className="text-sm opacity-90">{member.role}</p>
                 </div>
-              )}
+              </div>
             </CardContent>
           </Card>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

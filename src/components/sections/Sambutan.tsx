@@ -75,7 +75,7 @@ export default function Testimonial() {
               <div className="relative">
                 {/* Mobile Layout */}
                 <div className="md:hidden">
-                  <div className="bg-[#5BB4E5] rounded-3xl shadow-xl p-6 pb-8">
+                  <div className="bg-[#1BA3E0] rounded-3xl shadow-xl p-6 pb-8">
                     <div className="flex flex-col items-center">
                       {/* Image for Mobile - Centered and Smaller */}
                       <div className="w-48 h-48 mb-4 relative -mt-16">
@@ -123,7 +123,7 @@ export default function Testimonial() {
 
                   {/* Card Background */}
                   <div
-                    className={`bg-[#5BB4E5] rounded-3xl shadow-xl flex ${
+                    className={`bg-[#1BA3E0] rounded-3xl shadow-xl flex ${
                       item.align === "left" ? "flex-row" : "flex-row-reverse"
                     } h-[400px] lg:h-[450px]`}
                   >
@@ -160,7 +160,7 @@ export default function Testimonial() {
                 onClick={() => goToSlide(index)}
                 className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                   index === activeIndex
-                    ? "bg-[#5BB4E5] w-8"
+                    ? "bg-[#1BA3E0] w-8"
                     : "bg-gray-300 hover:bg-gray-400"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}

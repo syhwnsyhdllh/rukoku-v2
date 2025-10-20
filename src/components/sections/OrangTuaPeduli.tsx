@@ -170,12 +170,12 @@ const OrangTuaPeduli = () => {
       {/* Team Cards Slider */}
       <div
         ref={scrollContainerRef}
-        className="flex gap-5 overflow-x-auto hide-scrollbar scroll-smooth snap-x snap-mandatory"
+        className="flex gap-4 overflow-x-auto hide-scrollbar scroll-smooth snap-x snap-mandatory"
       >
         {teamMembers.map((member, index) => (
           <Card
             key={index}
-            className={`team-card flex-shrink-0 w-[85vw] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] overflow-hidden border-0 ${member.bgColor} snap-start`}
+            className={`team-card rounded-3xl flex-shrink-0 w-[85vw] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] overflow-hidden border-0 ${member.bgColor} snap-start`}
           >
             <CardContent className="p-0">
               <div className="relative group">

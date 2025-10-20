@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import InfoTerkini from "@/components/sections/InfoTerkini";
 import OrangTuaPeduli from "@/components/sections/OrangTuaPeduli";
 import RukokuSection from "@/components/sections/Rukoku";
 import Sambutan from "@/components/sections/Sambutan";
@@ -18,6 +19,7 @@ export default function Home() {
       <OrangTuaPeduli />
       <TimPelaksana />
       <StatistikSection />
+      <InfoTerkini />
     </>
   );
 }

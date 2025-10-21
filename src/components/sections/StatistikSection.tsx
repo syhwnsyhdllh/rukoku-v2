@@ -316,7 +316,7 @@ const StatistikSection = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-blue-50">
+    <section className="py-8 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-8 bg-blue-50">
       <style jsx>{`
         @keyframes fade-in {
           from {
@@ -341,7 +341,7 @@ const StatistikSection = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl mb-4 sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+          <h2 className="text-3xl mb-4 sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight">
             Statistik
           </h2>
           <p className="text-gray-600 text-xs sm:text-sm lg:text-base px-4">
@@ -356,22 +356,22 @@ const StatistikSection = () => {
           onValueChange={(value) => setActiveTab(value)}
         >
           <div className="overflow-x-auto overflow-y-hidden scrollbar-hide">
-            <TabsList className="mb-6 sm:mb-8 bg-transparent w-full justify-start inline-flex min-w-full">
+            <TabsList className="mb-6 sm:mb-5 bg-transparent w-full justify-start inline-flex min-w-full">
               <TabsTrigger
                 value="tkpaud"
-                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-md px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
+                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
               >
                 TK/PAUD
               </TabsTrigger>
               <TabsTrigger
                 value="sd"
-                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-md px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
+                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
               >
                 Sekolah Dasar
               </TabsTrigger>
               <TabsTrigger
                 value="smp"
-                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-md px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
+                className="data-[state=active]:bg-[#046DC2] data-[state=active]:text-white rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-sm whitespace-nowrap flex-shrink-0"
               >
                 SMP
               </TabsTrigger>
@@ -381,9 +381,9 @@ const StatistikSection = () => {
           <TabsContent value={activeTab}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Left Card - Bar Chart */}
-              <Card className="border-none rounded-3xl">
+              <Card className="border-none rounded-3xl shadow-none">
                 <CardContent className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-center mb-1 sm:mb-2">
+                  <h3 className="text-lg sm:text-xl font-bold text-center mb-1 sm:mb-2 text-blue-950">
                     Data Sekolah Kab. Gowa
                   </h3>
                   <p className="text-center text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6">
@@ -395,9 +395,9 @@ const StatistikSection = () => {
               </Card>
 
               {/* Right Card - Horizontal Bar Chart */}
-              <Card className="border-none rounded-3xl">
+              <Card className="border-none rounded-3xl shadow-none">
                 <CardContent className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6 text-blue-950">
                     Data Sekolah Kab. Gowa
                   </h3>
 

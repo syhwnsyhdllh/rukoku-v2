@@ -139,7 +139,7 @@ const OrangTuaPeduli = () => {
           <div className="inline-block px-4 py-1.5 border border-gray-300 rounded-full text-sm font-medium mb-4">
             RUKOKU
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight">
             Komunitas Orang Tua Peduli
             <br />
             Kabupaten Gowa

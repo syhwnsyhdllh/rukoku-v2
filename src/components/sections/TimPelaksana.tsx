@@ -148,7 +148,7 @@ const TimPelaksana = () => {
   }, []);
 
   return (
-    <section className="mx-auto px-4 sm:px-6 lg:px-48 py-12 lg:py-16">
+    <section className="mx-auto px-4 sm:px-6 lg:px-48 py-12 lg:py-20 mb-16">
       <style jsx>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
@@ -165,7 +165,7 @@ const TimPelaksana = () => {
           <div className="inline-block px-4 py-1.5 border border-gray-300 rounded-full text-sm font-medium mb-4">
             RUKOKU
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight">
             Tim Pelaksana Rukoku
             <br />
             Dinas Pendidikan Kab. Gowa

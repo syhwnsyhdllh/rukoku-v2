@@ -46,7 +46,7 @@ export default function TimEfektifSection() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12 text-center w-full">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight mb-4">
             Tim Efektif RUKOKU
           </h2>
           <p className="text-gray-600 max-w-2xl text-sm sm:text-base mx-auto">

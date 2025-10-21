@@ -11,14 +11,14 @@ export default function VisiMisi() {
           {/* Left Side - Header */}
           <div className="lg:col-span-1">
             <div className="bg-blue-50 rounded-lg p-4 inline-block mb-4">
-              <p className="text-blue-600 font-medium text-sm md:text-base uppercase tracking-wide">
+              <p className="text-blue-600 font-medium text-sm md:text-base tracking-wide">
                 DINAS PENDIDIKAN KABUPATEN GOWA
               </p>
             </div>
-            <div className="space-y-4 text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mt-2">
+            <div className="space-y-2 text-3xl md:text-4xl lg:text-5xl font-bold text-blue-950 mt-2">
               <h2>Visi & Misi</h2>
-              <h2>DINAS PENDIDIKAN</h2>
-              <h2>KABUPATEN GOWA</h2>
+              <h2>Dinas Pendidikan</h2>
+              <h2>Kabupaten Gowa</h2>
             </div>
           </div>
 

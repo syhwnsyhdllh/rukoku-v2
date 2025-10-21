@@ -10,7 +10,7 @@ export default function RukokuSection() {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-20 justify-between items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="order-2 md:order-1">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 md:mb-6">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight mb-5">
               Perjalanan Terbentuknya Rukoku
             </h3>
             <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
@@ -18,7 +18,7 @@ export default function RukokuSection() {
               memperoleh perlindungan pendidikan dan kasih sayang. Masyarakat,
               orang tua dan sekolah adalah wadah mereka mendapatkan semua itu.
             </p>
-            <button className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white font-medium px-6 md:px-8 py-3 md:py-4 rounded-lg transition-colors duration-300 text-sm md:text-base">
+            <button className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white font-medium px-6 md:px-8 py-3 md:py-4 rounded-full transition-colors duration-300 text-sm md:text-base">
               Baca Selengkapnya
             </button>
           </div>

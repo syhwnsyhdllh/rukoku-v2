@@ -1,3 +1,5 @@
+import BannerSection from "@/components/sections/Banner";
+import Footer from "@/components/Footer";
 import Hero from "@/components/sections/Hero";
 import InfoTerkini from "@/components/sections/InfoTerkini";
 import OrangTuaPeduli from "@/components/sections/OrangTuaPeduli";
@@ -22,6 +24,7 @@ export default function Home() {
       <StatistikSection />
       <InfoTerkini />
       <TestimonialVideoSection />
+      <BannerSection />
     </>
   );
 }

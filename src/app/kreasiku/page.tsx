@@ -1,8 +1,8 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import HeroSection from "@/components/HeroSection";
 import { KreasikuGrid } from "@/components/KreasikuCard";
-import { Search, X, Filter } from "lucide-react";
+import { Search, X, Filter, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,6 +15,11 @@ const Kreasiku = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSchool, setSelectedSchool] = useState<string>("all");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+
+  // Pagination states
+  const [displayedCount, setDisplayedCount] = useState(8);
+  const [isLoading, setIsLoading] = useState(false);
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   const kreasis = [
     {
@@ -125,6 +130,43 @@ const Kreasiku = () => {
       image:
         "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&h=800&fit=crop",
     },
+    // Tambahkan data dummy untuk testing infinite scroll
+    {
+      id: 13,
+      title: "Membuat Kompos dari Sampah Organik",
+      school: "SDN BONTOMAEKU 2",
+      author: "Andi Wijaya",
+      date: "2024-01-15",
+      image:
+        "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&h=800&fit=crop",
+    },
+    {
+      id: 14,
+      title: "Kerajinan dari Sedotan",
+      school: "TK/PAUD BONTOBILA",
+      author: "Sari Indah",
+      date: "2024-01-20",
+      image:
+        "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&h=800&fit=crop",
+    },
+    {
+      id: 15,
+      title: "Percobaan Magnet",
+      school: "SMP NEGERI BONTOBILA",
+      author: "Reza Pratama",
+      date: "2024-02-01",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop",
+    },
+    {
+      id: 16,
+      title: "Belajar Angka dengan Lego",
+      school: "SD INPRES BONTOBILA",
+      author: "Nina Kartika",
+      date: "2024-02-10",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=800&fit=crop",
+    },
   ];
 
   // Filter options
@@ -152,6 +194,64 @@ const Kreasiku = () => {
       return schoolMatch && searchMatch;
     });
   }, [kreasis, selectedSchool, searchQuery]);
+
+  // Get displayed items based on current count
+  const displayedKreasis = useMemo(() => {
+    return filteredKreasis.slice(0, displayedCount);
+  }, [filteredKreasis, displayedCount]);
+
+  // Check if there are more items to load
+  const hasMore = displayedCount < filteredKreasis.length;
+
+  // Determine initial count based on screen size
+  const getInitialCount = () => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 640 ? 8 : 6;
+    }
+    return 8;
+  };
+
+  // Load more items
+  const loadMore = useCallback(() => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+
+    // Simulate API delay
+    setTimeout(() => {
+      const increment = window.innerWidth >= 640 ? 8 : 6;
+      setDisplayedCount((prev) => prev + increment);
+      setIsLoading(false);
+    }, 800);
+  }, [isLoading, hasMore]);
+
+  // Intersection Observer setup
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, loadMore]);
+
+  // Reset displayed count when filters change
+  useEffect(() => {
+    setDisplayedCount(getInitialCount());
+  }, [searchQuery, selectedSchool]);
 
   // Clear all filters
   const clearFilters = () => {
@@ -183,9 +283,8 @@ const Kreasiku = () => {
 
       {/* Filter & Search Section */}
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-8 px-5">
-        {/* Desktop View - Always visible side by side */}
+        {/* Desktop View */}
         <div className="hidden sm:flex flex-row gap-3 mb-4 items-stretch">
-          {/* Search Bar */}
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
@@ -207,7 +306,6 @@ const Kreasiku = () => {
             )}
           </div>
 
-          {/* Filter Dropdown */}
           <Select value={selectedSchool} onValueChange={setSelectedSchool}>
             <SelectTrigger className="w-56 h-12 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
               <div className="flex items-center gap-2">
@@ -228,7 +326,6 @@ const Kreasiku = () => {
             </SelectContent>
           </Select>
 
-          {/* Reset Button */}
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
@@ -240,13 +337,11 @@ const Kreasiku = () => {
           )}
         </div>
 
-        {/* Mobile View - Expandable Search */}
+        {/* Mobile View */}
         <div className="sm:hidden space-y-3 mb-4">
-          {/* First Row: Filter + Search Icon (Collapsed) OR Full Search (Expanded) */}
           <div className="flex gap-3 items-stretch">
             {!isSearchExpanded ? (
               <>
-                {/* Filter Dropdown - Full width when collapsed */}
                 <Select
                   value={selectedSchool}
                   onValueChange={setSelectedSchool}
@@ -270,7 +365,6 @@ const Kreasiku = () => {
                   </SelectContent>
                 </Select>
 
-                {/* Search Icon Button */}
                 <button
                   onClick={handleSearchExpand}
                   className="h-12 w-12 flex items-center justify-center rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition-all flex-shrink-0"
@@ -280,7 +374,6 @@ const Kreasiku = () => {
                 </button>
               </>
             ) : (
-              /* Expanded Search Bar - Full width with smooth animation */
               <div className="relative flex-1 animate-in fade-in slide-in-from-right-5 duration-300">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Search className="h-5 w-5 text-gray-400" />
@@ -304,7 +397,6 @@ const Kreasiku = () => {
             )}
           </div>
 
-          {/* Second Row: Filter Dropdown (when search is expanded) */}
           {isSearchExpanded && (
             <div className="animate-in fade-in slide-in-from-top-3 duration-300">
               <Select value={selectedSchool} onValueChange={setSelectedSchool}>
@@ -329,7 +421,6 @@ const Kreasiku = () => {
             </div>
           )}
 
-          {/* Reset Button - Full width on mobile when filters active */}
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
@@ -345,17 +436,38 @@ const Kreasiku = () => {
         <div className="text-sm text-gray-600">
           Menampilkan{" "}
           <span className="font-semibold text-gray-900">
-            {filteredKreasis.length}
+            {displayedKreasis.length}
           </span>{" "}
           dari{" "}
-          <span className="font-semibold text-gray-900">{kreasis.length}</span>{" "}
+          <span className="font-semibold text-gray-900">
+            {filteredKreasis.length}
+          </span>{" "}
           karya
         </div>
       </div>
 
       {/* Grid or Empty State */}
       {filteredKreasis.length > 0 ? (
-        <KreasikuGrid kreasis={filteredKreasis} />
+        <>
+          <KreasikuGrid kreasis={displayedKreasis} />
+
+          {/* Intersection Observer Target & Loading Spinner */}
+          {hasMore && (
+            <div
+              ref={observerTarget}
+              className="flex justify-center items-center py-8"
+            >
+              {isLoading && (
+                <div className="flex items-center gap-2 text-blue-600">
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                  <span className="text-sm font-medium">
+                    Memuat lebih banyak...
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+        </>
       ) : (
         <EmptyState
           searchQuery={searchQuery}

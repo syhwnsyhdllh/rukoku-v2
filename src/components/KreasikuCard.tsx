@@ -135,7 +135,7 @@ const KreasikuCard = ({ kreasi }: KreasiCardProps) => {
 // Grid Component
 const KreasikuGrid = ({ kreasis }: KreasiGridProps) => {
   return (
-    <div className="max-w-7xl px-5 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="max-w-7xl px-5 lg:px-0 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {kreasis.map((kreasi) => (
         <KreasikuCard key={kreasi.id} kreasi={kreasi} />
       ))}

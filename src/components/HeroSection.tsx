@@ -34,7 +34,7 @@ const HeroSection = ({
 }: HeroSectionProps) => {
   return (
     <section
-      className="relative py-16 md:py-24 px-4 overflow-hidden"
+      className="relative py-16 md:py-24 px-4 overflow-hidden lg:pt-0"
       style={{ backgroundColor }}
     >
       <div className="max-w-7xl mx-auto">

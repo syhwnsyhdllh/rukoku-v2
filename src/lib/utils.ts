@@ -11,6 +11,23 @@ export function cn(...inputs: ClassValue[]) {
 // ========================================
 
 /**
+ * Get badge color based on school name
+ * @param school - Nama sekolah
+ * @returns Tailwind background color class
+ */
+export const getSchoolBadgeColor = (school: string): string => {
+  const schoolUpper = school.toUpperCase(); // Convert ke uppercase untuk matching
+
+  if (schoolUpper.includes("SD INPRES")) return "bg-cyan-500";
+  if (schoolUpper.includes("SDN")) return "bg-blue-500";
+  if (schoolUpper.includes("SMP")) return "bg-purple-500";
+  if (schoolUpper.includes("TK") || schoolUpper.includes("PAUD"))
+    return "bg-orange-500";
+
+  return "bg-gray-500"; // default color
+};
+
+/**
  * Generate slug dari string title
  * @param title - Judul yang akan diconvert ke slug
  * @returns slug yang SEO-friendly
@@ -73,5 +90,6 @@ export function getRelativeTime(date: string | Date): string {
     return `${Math.floor(diffInSeconds / 604800)} minggu yang lalu`;
   if (diffInSeconds < 31536000)
     return `${Math.floor(diffInSeconds / 2592000)} bulan yang lalu`;
+
   return `${Math.floor(diffInSeconds / 31536000)} tahun yang lalu`;
 }

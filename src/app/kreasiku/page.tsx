@@ -307,7 +307,7 @@ const Kreasiku = () => {
           </div>
 
           <Select value={selectedSchool} onValueChange={setSelectedSchool}>
-            <SelectTrigger className="w-56 h-12 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
+            <SelectTrigger className="w-56 h-12 z-10 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4 text-gray-500" />
                 <SelectValue placeholder="Pilih Sekolah" />

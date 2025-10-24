@@ -187,15 +187,8 @@ const GaleriFoto = () => {
   }, [selectedPhoto]);
 
   return (
-    <div className="min-h-screen py-12 px-4 lg:mt-20">
+    <div className="min-h-screen py-16 px-4 ">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
-          <span className="inline-block border-t-2 border-blue-400 pt-2 mr-4"></span>
-          FOTO KEGIATAN SEKOLAHKU
-          <span className="inline-block border-t-2 border-blue-400 pt-2 ml-4"></span>
-        </h1>
-
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {filters.map((filter) => (

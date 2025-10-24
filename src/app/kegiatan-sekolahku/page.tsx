@@ -190,7 +190,6 @@ export default function KegiatanSekolahku() {
             </div>
           )}
         </div>
-        <GaleriFoto />
       </section>
     </div>
   );

@@ -47,7 +47,7 @@ const Navbar = () => {
       label: "Kegiatan sekolahku",
       href: "/kegiatan-sekolahku",
       dropdown: [
-        { label: "Event Sekolah", href: "/kegiatan-sekolahku" },
+        { label: "Event Sekolah", href: "/kegiatan-sekolahku/event-sekolahku" },
         {
           label: "Galeri Foto",
           href: "/kegiatan-sekolahku/galeri-kegiatan-sekolahku",
@@ -59,8 +59,8 @@ const Navbar = () => {
       label: "Parenting",
       href: "/parenting",
       dropdown: [
-        { label: "Agenda Parenting", href: "/parenting/agenda" },
-        { label: "Materi Parenting", href: "/parenting/materi" },
+        { label: "Agenda Parenting", href: "/parenting/agenda-parenting" },
+        { label: "Materi Parenting", href: "/parenting/materi-parenting" },
         { label: "Galeri Kegiatan Parenting", href: "/parenting/galeri" },
       ],
     },

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import GaleriFoto from "@/components/GaleriFoto";
+import EventCard from "@/components/EventCard";
 import HeroSection from "@/components/HeroSection";
 
 export default function KegiatanSekolahku() {
@@ -128,42 +127,19 @@ export default function KegiatanSekolahku() {
         <div className="max-w-7xl mx-auto">
           {/* Activities Grid - Responsive: 2 cols (mobile), 4 cols (tablet & desktop) */}
           <div className="min-h-[600px] md:min-h-[650px]">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-12 ">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-12">
               {currentItems.map((activity) => (
-                <div
-                  key={activity.id}
-                  className="bg-white rounded-2xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
-                >
-                  {/* Image */}
-                  <div className="relative h-40 md:h-48 bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
-                    <Image
-                      src={activity.image}
-                      alt={activity.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-3 md:p-5 space-y-2 md:space-y-3">
-                    <h3 className="font-semibold text-gray-800 text-sm md:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
-                      {activity.title}
-                    </h3>
-
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between text-xs md:text-sm gap-2">
-                      <span className="text-gray-500">{activity.date}</span>
-                      <span className="font-semibold text-green-600 bg-green-50 px-2 md:px-3 py-1 rounded-full text-xs">
-                        {activity.price}
-                      </span>
-                    </div>
-
-                    <div className="pt-2 md:pt-3 border-t border-gray-100">
-                      <p className="text-xs text-gray-500 line-clamp-2">
-                        {activity.organizer}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <EventCard
+                  image={activity.image}
+                  title={activity.title}
+                  date={activity.date}
+                  badge={activity.price}
+                  badgePosition="bottom"
+                  showMetadataLabel={false} // ← Hide label
+                  metadata={{
+                    value: activity.organizer, // Langsung value, tanpa label
+                  }}
+                />
               ))}
             </div>
           </div>

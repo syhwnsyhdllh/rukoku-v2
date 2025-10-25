@@ -6,108 +6,24 @@ interface Photo {
   id: number;
   category: string;
   title: string;
-  images: string[]; // Multiple images per activity
+  images: string[];
 }
 
-const GaleriFoto = () => {
-  const [activeFilter, setActiveFilter] = useState<string>("SEMUA");
+interface GaleriFotoProps {
+  photos: Photo[];
+  filters: string[];
+  defaultFilter?: string;
+}
+
+const GaleriFoto = ({
+  photos,
+  filters,
+  defaultFilter = "SEMUA",
+}: GaleriFotoProps) => {
+  const [activeFilter, setActiveFilter] = useState<string>(defaultFilter);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
-  const photos: Photo[] = [
-    {
-      id: 1,
-      category: "SD",
-      title: "Jum'at Ibadah SDN Bontomaeru 2",
-      images: [
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 2,
-      category: "SD",
-      title: "Kegiatan Membaca di Taman",
-      images: [
-        "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 3,
-      category: "SD",
-      title: "Belajar di Kelas",
-      images: [
-        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 4,
-      category: "SD",
-      title: "Kegiatan Pramuka",
-      images: [
-        "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 5,
-      category: "SMP",
-      title: "Pawai Adat Nusantara",
-      images: [
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 6,
-      category: "TK",
-      title: "Peralatan Modern",
-      images: [
-        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 7,
-      category: "TK",
-      title: "Kegiatan Fotografi",
-      images: [
-        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 8,
-      category: "SMP",
-      title: "Produk Kesehatan",
-      images: [
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1505751104628-0d6beeef75da?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 9,
-      category: "TK",
-      title: "Dekorasi Ruangan",
-      images: [
-        "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=800&fit=crop",
-      ],
-    },
-    {
-      id: 10,
-      category: "SD",
-      title: "Makanan Sehat",
-      images: [
-        "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=800&fit=crop",
-      ],
-    },
-  ];
-
-  const filters: string[] = ["SEMUA", "TK", "SD", "SMP"];
 
   const filteredPhotos: Photo[] =
     activeFilter === "SEMUA"
@@ -117,7 +33,7 @@ const GaleriFoto = () => {
   const openModal = (photo: Photo, photoIndex: number) => {
     setSelectedPhoto(photo);
     setCurrentPhotoIndex(photoIndex);
-    setCurrentImageIndex(0); // Start from first image
+    setCurrentImageIndex(0);
   };
 
   const closeModal = () => {
@@ -129,10 +45,8 @@ const GaleriFoto = () => {
     if (!selectedPhoto) return;
 
     if (currentImageIndex < selectedPhoto.images.length - 1) {
-      // Next image in same activity
       setCurrentImageIndex(currentImageIndex + 1);
     } else {
-      // Move to next activity
       const nextPhotoIndex = (currentPhotoIndex + 1) % filteredPhotos.length;
       setCurrentPhotoIndex(nextPhotoIndex);
       setSelectedPhoto(filteredPhotos[nextPhotoIndex]);
@@ -144,10 +58,8 @@ const GaleriFoto = () => {
     if (!selectedPhoto) return;
 
     if (currentImageIndex > 0) {
-      // Previous image in same activity
       setCurrentImageIndex(currentImageIndex - 1);
     } else {
-      // Move to previous activity
       const prevPhotoIndex =
         (currentPhotoIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
       setCurrentPhotoIndex(prevPhotoIndex);
@@ -187,9 +99,9 @@ const GaleriFoto = () => {
   }, [selectedPhoto]);
 
   return (
-    <div className="min-h-screen py-16 px-4 ">
+    <div className="min-h-screen py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Filter Buttons */}
+        {/* Filter Buttons - Always Visible */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {filters.map((filter) => (
             <button
@@ -318,3 +230,8 @@ const GaleriFoto = () => {
 };
 
 export default GaleriFoto;
+
+// ============================================
+// TYPE DEFINITION
+// ============================================
+export type { Photo };

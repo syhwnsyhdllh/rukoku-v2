@@ -118,7 +118,7 @@ const MateriParenting = () => {
       <HeroSection
         title="Materi Parenting"
         description="Kumpulan materi dan panduan parenting untuk membantu orang tua dalam mendidik dan mengasuh anak dengan lebih baik."
-        imageSrc="/images/ilustrasi/materi-parenting.png"
+        imageSrc="/images/ilustrasi/parenting.png"
         imageAlt="Materi Parenting"
       />
 

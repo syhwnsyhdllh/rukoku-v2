@@ -61,7 +61,10 @@ const Navbar = () => {
       dropdown: [
         { label: "Agenda Parenting", href: "/parenting/agenda-parenting" },
         { label: "Materi Parenting", href: "/parenting/materi-parenting" },
-        { label: "Galeri Kegiatan Parenting", href: "/parenting/galeri" },
+        {
+          label: "Galeri Kegiatan Parenting",
+          href: "/parenting/galeri-parenting",
+        },
       ],
     },
   ];

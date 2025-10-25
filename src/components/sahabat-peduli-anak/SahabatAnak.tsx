@@ -1,13 +1,5 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Twitter, Facebook, Instagram, Linkedin } from "lucide-react";
-
-interface SocialMedia {
-  twitter?: string;
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-}
 
 interface TeamMember {
   id: number;
@@ -15,28 +7,83 @@ interface TeamMember {
   position: string;
   description: string;
   image: string;
-  badgeColor: string;
-  socialMedia: SocialMedia;
 }
 
 const TeamCard = ({ member }: { member: TeamMember }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="flex-shrink-0 w-[280px] md:w-[320px]">
-      <div className="relative rounded-3xl overflow-hidden h-[480px] bg-white shadow-lg">
-        {/* Top Section - Content */}
-        <div className="relative h-[180px] p-6 flex flex-col justify-between">
-          {/* Age Badge */}
-          <div className="flex justify-between items-start">
+    <div
+      className="flex-shrink-0 w-[300px] md:w-[340px]"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative rounded-3xl overflow-hidden h-[500px] bg-white z-10 shadow hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+        {/* Top Section - Quote */}
+        <div className="relative h-[200px] p-6 flex flex-col justify-center">
+          <div className="relative">
+            {/* Animated Quote Icon */}
             <div
-              className={`${member.badgeColor} rounded-full px-4 py-1.5 inline-flex items-center gap-2`}
+              className={`transition-all duration-500 ${
+                isHovered ? "scale-110 rotate-6" : "scale-100 rotate-0"
+              }`}
             >
-              <span className="text-black font-semibold text-xs">
-                {member.position}
-              </span>
-            </div>
-            <button className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
               <svg
-                className="w-4 h-4"
+                className="absolute -left-2 -top-3 w-12 h-12 text-blue-400 opacity-30"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+            </div>
+            {/* Quote Text with Animation */}
+            <p className="text-lg md:text-xl font-medium text-gray-700 leading-relaxed italic pl-8 transition-all duration-300">
+              {member.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Section - Image */}
+        <div className="relative h-[300px]">
+          {/* Image with Overlay Effect */}
+          <div className="relative h-full overflow-hidden">
+            <img
+              src={member.image}
+              alt={member.name}
+              className={`w-full h-full object-cover object-top transition-transform duration-700 ${
+                isHovered ? "scale-110" : "scale-100"
+              }`}
+            />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent"></div>
+          </div>
+
+          {/* Info Card with Glass Effect */}
+          <div
+            className={`absolute bottom-4 left-4 right-4 bg-white/50 backdrop-blur-sm rounded-2xl px-5 py-4 shadow-2xl transition-all duration-500 ${
+              isHovered ? "bg-white/95 translate-y-0" : "translate-y-1"
+            }`}
+          >
+            {/* Decorative Line */}
+            <div className="w-12 h-1 bg-gradient-to-r from-[#48BCFF] to-[#046DC2] rounded-full mb-3"></div>
+
+            <h3 className="font-bold text-gray-900 text-base mb-1 leading-tight">
+              {member.name}
+            </h3>
+            <p className="text-blue-600 text-sm font-medium">
+              {member.position}
+            </p>
+
+            {/* Hover Effect Icon */}
+            <div
+              className={`absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-br from-[#48BCFF] to-[#046DC2] rounded-full flex items-center justify-center shadow-lg transition-all duration-500 ${
+                isHovered
+                  ? "scale-100 rotate-0 opacity-100"
+                  : "scale-0 rotate-180 opacity-0"
+              }`}
+            >
+              <svg
+                className="w-5 h-5 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -45,72 +92,10 @@ const TeamCard = ({ member }: { member: TeamMember }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M9 5l7 7-7 7"
+                  d="M5 13l4 4L19 7"
                 />
               </svg>
-            </button>
-          </div>
-
-          {/* Title & Description */}
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 leading-tight">
-              {member.name}
-            </h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {member.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Bottom Section - Image */}
-        <div className="relative h-[300px]">
-          <img
-            src={member.image}
-            alt={member.name}
-            className="w-full h-full object-cover object-top"
-          />
-          {/* Social Media Overlay */}
-          <div className="absolute bottom-4 left-4 flex gap-2">
-            {member.socialMedia.twitter && (
-              <a
-                href={member.socialMedia.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-all duration-300 shadow-md"
-              >
-                <Twitter size={16} className="text-gray-800" />
-              </a>
-            )}
-            {member.socialMedia.facebook && (
-              <a
-                href={member.socialMedia.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-all duration-300 shadow-md"
-              >
-                <Facebook size={16} className="text-gray-800" />
-              </a>
-            )}
-            {member.socialMedia.instagram && (
-              <a
-                href={member.socialMedia.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-all duration-300 shadow-md"
-              >
-                <Instagram size={16} className="text-gray-800" />
-              </a>
-            )}
-            {member.socialMedia.linkedin && (
-              <a
-                href={member.socialMedia.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-all duration-300 shadow-md"
-              >
-                <Linkedin size={16} className="text-gray-800" />
-              </a>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -126,63 +111,56 @@ const SahabatAnak = () => {
   const teamMembers: TeamMember[] = [
     {
       id: 1,
-      name: "Junior Programs",
-      position: "5-8 Years",
-      description: "For young kids 5-8 focus on fundamentals and fun",
+      name: "Prof. Dr. Muhammad Jufri, S.Psi., M.Si., M.Psi.",
+      position: "Psikolog",
+      description:
+        "Anak adalah investasi masa depan yang harus kita didik dengan penuh kasih sayang dan kebijaksanaan.",
       image: "/images/tim-efektif/1.svg",
-      badgeColor: "bg-lime-400",
-      socialMedia: {
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
-      },
     },
     {
       id: 2,
-      name: "Youth Programs",
-      position: "12-16 Years",
+      name: "Iqbal Raymond, S.Psi.NNLP",
+      position: "Direktur Program BrainEvo Indonesia",
       description:
-        "For teenagers 12-16 Advanced techniques and competition focus",
+        "Anak adalah titipan sang pencipta dan bentuklah dia sesuai dengan fitrahnya.",
       image:
         "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=800&fit=crop",
-      badgeColor: "bg-purple-300",
-      socialMedia: {
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
-      },
     },
     {
       id: 3,
-      name: "Adult Programs",
-      position: "16-60 Years",
-      description: "For players of all levels from beginner to advanced",
+      name: "Sutrawati Rasyid, SKM. M.M",
+      position: "Kepala Bidang PPA",
+      description:
+        "Anak adalah masa depan bangsa yang harus kita jaga dan lindungi agar terbentuk karakter pemimpin yang berakhlak mulia.",
       image:
         "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&h=800&fit=crop",
-      badgeColor: "bg-pink-300",
-      socialMedia: {
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
-      },
     },
     {
       id: 4,
-      name: "Private Lessons",
-      position: "All Ages",
-      description: "One-on-one coaching personalized to your goals",
+      name: "dr. Gaffar, DPDK",
+      position: "Kabid Pencegahan dan Pengendalian Penyakit Dinkes Gowa",
+      description:
+        "Kesehatan anak adalah fondasi bangsa yang kuat, mari kita lindungi mereka dengan penuh perhatian.",
       image:
         "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=800&fit=crop",
-      badgeColor: "bg-cyan-300",
-      socialMedia: {
-        twitter: "https://twitter.com",
-        facebook: "https://facebook.com",
-        instagram: "https://instagram.com",
-        linkedin: "https://linkedin.com",
-      },
+    },
+    {
+      id: 5,
+      name: "Athina Saraya, S.Psi., M.Sc",
+      position: "Psikolog",
+      description:
+        "Memahami psikologi anak adalah kunci membuka potensi terbaik mereka untuk masa depan gemilang.",
+      image:
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=800&fit=crop",
+    },
+    {
+      id: 6,
+      name: "Riskawati Agung S.T",
+      position: "Ruang Guru",
+      description:
+        "Pendidikan yang berkualitas adalah hak setiap anak untuk meraih mimpi dan cita-citanya.",
+      image:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&h=800&fit=crop",
     },
   ];
 
@@ -198,17 +176,16 @@ const SahabatAnak = () => {
         const container = scrollContainerRef.current;
         if (!container) return prev;
 
-        const cardWidth = 280 + 24; // card width + gap
+        const cardWidth = 300 + 24; // card width + gap
         const maxScroll = cardWidth * teamMembers.length;
 
-        // Reset to start when reaching the end of first set
         if (prev >= maxScroll) {
           return 0;
         }
 
-        return prev + 1; // Scroll speed (pixels per interval)
+        return prev + 0.5; // Slower scroll speed
       });
-    }, 30); // Update every 30ms for smooth animation
+    }, 20);
 
     return () => clearInterval(interval);
   }, [isHovered, teamMembers.length]);
@@ -221,18 +198,34 @@ const SahabatAnak = () => {
   }, [scrollPosition]);
 
   return (
-    <section className="py-16 bg-gray-50">
-      {/* Header - With Container */}
-      <div className="max-w-7xl mx-auto px-4 mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Comprehensive Tennis
-          <br />
-          Training for Everyone
-        </h2>
+    <section className="py-20 bg-gradient-to-br from-white to-white relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-20 right-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+      <div
+        className="absolute bottom-20 left-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+        style={{ animationDelay: "2s" }}
+      ></div>
+
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 mb-16 relative z-10">
+        <div className="inline-block">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-1 bg-gradient-to-r from-[#48BCFF] to-[#046DC2 rounded-full"></div>
+            <span className="text-[#046DC2] font-semibold text-sm uppercase tracking-wider">
+              Tim Profesional
+            </span>
+          </div>
+          <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2 leading-tight">
+            Bertemu dengan
+          </h2>
+          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#48BCFF] to-[#046DC2] bg-clip-text text-transparent leading-tight">
+            Sahabat Anak
+          </h2>
+        </div>
       </div>
 
-      {/* Carousel - Left Aligned with Padding, Right Overflows */}
-      <div className="w-full">
+      {/* Carousel */}
+      <div className="w-full relative z-10">
         <div className="overflow-hidden">
           <div
             ref={scrollContainerRef}
@@ -246,11 +239,6 @@ const SahabatAnak = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Info Text */}
-      <div className="max-w-7xl mx-auto px-4 mt-8 text-center text-sm text-gray-500">
-        Hover to pause • Auto-scrolling carousel
       </div>
     </section>
   );

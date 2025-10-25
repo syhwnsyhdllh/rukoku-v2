@@ -1,7 +1,9 @@
 "use client";
 
 import HeroSection from "@/components/HeroSection";
+import FAQAccordion from "@/components/sahabat-peduli-anak/FAQAccordion";
 import SahabatAnak from "@/components/sahabat-peduli-anak/SahabatAnak";
+import TanyaAhli from "@/components/sahabat-peduli-anak/TanyaAhli";
 
 const SahabatPeduliAnak = () => {
   return (
@@ -13,6 +15,8 @@ const SahabatPeduliAnak = () => {
         imageAlt="Dinas pendidikan"
       />
       <SahabatAnak />
+      <FAQAccordion />
+      <TanyaAhli />
     </>
   );
 };

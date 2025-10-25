@@ -316,7 +316,7 @@ const StatistikSection = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-8 bg-blue-50">
+    <section className="py-8 sm:py-12 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 ">
       <style jsx>{`
         @keyframes fade-in {
           from {

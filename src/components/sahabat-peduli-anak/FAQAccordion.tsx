@@ -60,16 +60,16 @@ const FAQAccordion = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
+            <div className="w-12 h-1 bg-gradient-to-l from-[#48BCFF] rounded-full"></div>
+            <span className="text-[#046DC2] font-semibold text-sm uppercase tracking-wider">
               FAQ
             </span>
-            <div className="w-12 h-1 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full"></div>
+            <div className="w-12 h-1 bg-gradient-to-r from-[#48BCFF] rounded-full"></div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+          <h2 className="text-4xl md:text-5xl font-bold text-blue-950 mb-3">
             Pertanyaan Yang Sering
           </h2>
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#48BCFF] to-[#046DC2] bg-clip-text text-transparent">
             Ditanyakan
           </h2>
         </div>
@@ -95,7 +95,7 @@ const FAQAccordion = () => {
                     <div
                       className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${
                         isOpen
-                          ? "bg-gradient-to-br from-blue-500 to-purple-600 rotate-180"
+                          ? "bg-gradient-to-br from-[#48BCFF] to-[#046DC2] rotate-180"
                           : "bg-blue-100 group-hover:bg-blue-200"
                       }`}
                     >

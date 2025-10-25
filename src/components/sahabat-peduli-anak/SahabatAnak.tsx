@@ -210,7 +210,7 @@ const SahabatAnak = () => {
       <div className="max-w-7xl mx-auto px-4 mb-16 relative z-10">
         <div className="inline-block">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-1 bg-gradient-to-r from-[#48BCFF] to-[#046DC2 rounded-full"></div>
+            <div className="w-12 h-1 bg-gradient-to-r from-[#48BCFF] rounded-full"></div>
             <span className="text-[#046DC2] font-semibold text-sm uppercase tracking-wider">
               Tim Profesional
             </span>

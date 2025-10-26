@@ -1,11 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import HeroSection from "@/components/HeroSection";
 import EventCard from "@/components/EventCard";
+import { Loader2, Search, X } from "lucide-react";
 
 const MateriParenting = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [displayedCount, setDisplayedCount] = useState(8);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   // Data materi parenting
   const materiParenting = [
@@ -81,36 +84,145 @@ const MateriParenting = () => {
       author: "dr. Ani Wijaya, Sp.A",
       position: "Dokter Spesialis Anak",
     },
+    {
+      id: 10,
+      image: "/images/materi/disiplin.jpg",
+      title: "Disiplin Positif untuk Anak",
+      date: "12 Desember 2025",
+      author: "Dr. Budi Santoso",
+      position: "Psikolog Anak",
+    },
+    {
+      id: 11,
+      image: "/images/materi/kreativitas.jpg",
+      title: "Mengembangkan Kreativitas Anak",
+      date: "15 Desember 2025",
+      author: "Dra. Rina Kusuma",
+      position: "Konselor Keluarga",
+    },
+    {
+      id: 12,
+      image: "/images/materi/percaya-diri.jpg",
+      title: "Membangun Kepercayaan Diri Anak",
+      date: "18 Desember 2025",
+      author: "Ahmad Fauzi, M.Psi",
+      position: "Psikolog Klinis",
+    },
+    {
+      id: 13,
+      image: "/images/materi/gizi.jpg",
+      title: "Nutrisi dan Gizi Seimbang untuk Anak",
+      date: "22 Desember 2025",
+      author: "dr. Ani Wijaya, Sp.A",
+      position: "Dokter Spesialis Anak",
+    },
+    {
+      id: 14,
+      image: "/images/materi/teknologi.jpg",
+      title: "Mengatur Screen Time Anak",
+      date: "25 Desember 2025",
+      author: "Prof. Dr. Siti Aminah",
+      position: "Pakar Komunikasi Keluarga",
+    },
+    {
+      id: 15,
+      image: "/images/materi/sosialisasi.jpg",
+      title: "Keterampilan Sosial pada Anak",
+      date: "28 Desember 2025",
+      author: "Nurul Hidayah, M.Psi",
+      position: "Child Development Specialist",
+    },
+    {
+      id: 16,
+      image: "/images/materi/motivasi.jpg",
+      title: "Memotivasi Anak untuk Belajar",
+      date: "2 Januari 2026",
+      author: "Dr. Lina Wati",
+      position: "Pendidik & Praktisi Parenting",
+    },
   ];
 
-  // Detect screen size and set items per page
+  // Filter based on search query
+  const filteredMateri = useMemo(() => {
+    if (!searchQuery) return materiParenting;
+
+    const query = searchQuery.toLowerCase();
+    return materiParenting.filter(
+      (materi) =>
+        materi.title.toLowerCase().includes(query) ||
+        materi.author.toLowerCase().includes(query) ||
+        materi.position.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
+
+  // Get displayed items
+  const displayedMateri = useMemo(() => {
+    return filteredMateri.slice(0, displayedCount);
+  }, [filteredMateri, displayedCount]);
+
+  // Check if there are more items
+  const hasMore = displayedCount < filteredMateri.length;
+
+  // Get initial count based on screen size
+  const getInitialCount = () => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 768 ? 8 : 6;
+    }
+    return 8;
+  };
+
+  // Load more items
+  const loadMore = useCallback(() => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+
+    // Simulate API delay
+    setTimeout(() => {
+      const increment =
+        typeof window !== "undefined" && window.innerWidth >= 768 ? 8 : 6;
+      setDisplayedCount((prev) => prev + increment);
+      setIsLoading(false);
+    }, 800);
+  }, [isLoading, hasMore]);
+
+  // Intersection Observer setup
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerPage(6); // Mobile: 6 cards
-      } else {
-        setItemsPerPage(8); // Tablet & Desktop: 8 cards
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
     };
+  }, [hasMore, isLoading, loadMore]);
 
-    handleResize(); // Initial check
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  // Set initial count on mount
+  useEffect(() => {
+    setDisplayedCount(getInitialCount());
   }, []);
 
-  // Reset to page 1 when itemsPerPage changes
+  // Reset displayed count when search changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [itemsPerPage]);
+    setDisplayedCount(getInitialCount());
+  }, [searchQuery]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(materiParenting.length / itemsPerPage);
-  const showPagination = materiParenting.length > itemsPerPage;
-
-  // Get current page items
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = materiParenting.slice(indexOfFirstItem, indexOfLastItem);
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
 
   return (
     <div className="min-h-screen">
@@ -123,47 +235,106 @@ const MateriParenting = () => {
       />
 
       {/* Materials Grid Section */}
-      <section className="py-12 md:py-16 px-4">
+      <section className="pb-20 px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Materials Grid - Responsive: 2 cols (mobile), 4 cols (tablet & desktop) */}
-          <div className="min-h-[600px] md:min-h-[650px]">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-12">
-              {currentItems.map((materi) => (
-                <EventCard
-                  key={materi.id}
-                  image={materi.image}
-                  title={materi.title}
-                  date={materi.date}
-                  showMetadataLabel={true}
-                  metadata={{
-                    value: materi.author,
-                    subLabel: materi.position,
-                  }}
-                  onClick={() => console.log("Clicked:", materi.title)}
-                />
-              ))}
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-2xl mx-auto">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Cari materi berdasarkan judul, penulis, atau topik..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full h-12 pl-12 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              />
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Hapus pencarian"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Pagination - Only show if needed */}
-          {showPagination && (
-            <div className="flex justify-center items-center gap-2">
-              {[...Array(totalPages)].map((_, index) => {
-                const pageNum = index + 1;
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => setCurrentPage(pageNum)}
-                    className={`w-10 h-10 rounded-lg font-medium transition-all duration-200 ${
-                      currentPage === pageNum
-                        ? "bg-[#046DC2] text-white scale-110"
-                        : "bg-white text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
+          {/* Results Count */}
+          <div className="text-sm text-gray-600 mb-6">
+            Menampilkan{" "}
+            <span className="font-semibold text-gray-900">
+              {displayedMateri.length}
+            </span>{" "}
+            dari{" "}
+            <span className="font-semibold text-gray-900">
+              {filteredMateri.length}
+            </span>{" "}
+            materi
+            {searchQuery && (
+              <span className="ml-1">
+                untuk pencarian "
+                <span className="font-semibold text-blue-600">
+                  {searchQuery}
+                </span>
+                "
+              </span>
+            )}
+          </div>
+
+          {/* Materials Grid or Empty State */}
+          {filteredMateri.length > 0 ? (
+            <>
+              {/* Materials Grid - Responsive Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-12">
+                {displayedMateri.map((materi) => (
+                  <EventCard
+                    key={materi.id}
+                    image={materi.image}
+                    title={materi.title}
+                    date={materi.date}
+                    showMetadataLabel={true}
+                    metadata={{
+                      label: "Penulis",
+                      value: materi.author,
+                      subLabel: materi.position,
+                    }}
+                    onClick={() => console.log("Clicked:", materi.title)}
+                  />
+                ))}
+              </div>
+
+              {/* Intersection Observer Target & Loading Spinner */}
+              {hasMore && (
+                <div
+                  ref={observerTarget}
+                  className="flex justify-center items-center py-8"
+                >
+                  {isLoading && (
+                    <div className="flex items-center gap-2 text-blue-600">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                      <span className="text-sm font-medium">
+                        Memuat lebih banyak...
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            /* Empty State */
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                <Search className="h-10 w-10 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Tidak Ada Hasil Ditemukan
+              </h3>
+              <p className="text-gray-500 text-center mb-6 max-w-md">
+                Tidak ada materi yang cocok dengan pencarian "{searchQuery}"
+              </p>
             </div>
           )}
         </div>

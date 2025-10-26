@@ -1,6 +1,19 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
+import { X, ChevronLeft, ChevronRight, Loader2, Filter } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Photo {
   id: number;
@@ -24,11 +37,79 @@ const GaleriFoto = ({
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [displayedCount, setDisplayedCount] = useState(8);
+  const [isLoading, setIsLoading] = useState(false);
+  const observerTarget = useRef<HTMLDivElement>(null);
 
-  const filteredPhotos: Photo[] =
-    activeFilter === "SEMUA"
+  // Filter photos based on active filter
+  const filteredPhotos: Photo[] = useMemo(() => {
+    return activeFilter === "SEMUA"
       ? photos
       : photos.filter((photo) => photo.category === activeFilter);
+  }, [photos, activeFilter]);
+
+  // Get displayed photos
+  const displayedPhotos = useMemo(() => {
+    return filteredPhotos.slice(0, displayedCount);
+  }, [filteredPhotos, displayedCount]);
+
+  // Check if there are more photos
+  const hasMore = displayedCount < filteredPhotos.length;
+
+  // Get initial count based on screen size
+  const getInitialCount = () => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 640 ? 8 : 6;
+    }
+    return 8;
+  };
+
+  // Load more photos
+  const loadMore = useCallback(() => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      const increment =
+        typeof window !== "undefined" && window.innerWidth >= 640 ? 8 : 6;
+      setDisplayedCount((prev) => prev + increment);
+      setIsLoading(false);
+    }, 600);
+  }, [isLoading, hasMore]);
+
+  // Intersection Observer setup
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, loadMore]);
+
+  // Reset displayed count when filter changes
+  useEffect(() => {
+    setDisplayedCount(getInitialCount());
+  }, [activeFilter]);
+
+  // Set initial count on mount
+  useEffect(() => {
+    setDisplayedCount(getInitialCount());
+  }, []);
 
   const openModal = (photo: Photo, photoIndex: number) => {
     setSelectedPhoto(photo);
@@ -99,32 +180,58 @@ const GaleriFoto = ({
   }, [selectedPhoto]);
 
   return (
-    <div className="min-h-screen py-16 px-4">
+    <div className="min-h-screen pb-20 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Filter Buttons - Always Visible */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`px-6 py-2 rounded font-semibold transition-all duration-300 ${
-                activeFilter === filter
-                  ? "bg-[#046DC2] text-white shadow rounded-full"
-                  : "bg-white text-gray-700 hover:bg-gray-100 rounded-full"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+        {/* Filter Section */}
+        <div className="mb-8">
+          {/* Desktop View - Horizontal Buttons */}
+          <div className="hidden md:flex flex-wrap justify-center gap-2 mb-4">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+                  activeFilter === filter
+                    ? "bg-[#046DC2] text-white shadow scale-105"
+                    : " text-gray-700 hover:bg-gray-100 "
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile View - Dropdown */}
+          <div className="md:hidden mt-6">
+            <Select value={activeFilter} onValueChange={setActiveFilter}>
+              <SelectTrigger className="w-full h-12 rounded-xl border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-gray-500" />
+                  <SelectValue placeholder="Pilih Kategori" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {filters.map((filter) => (
+                  <SelectItem
+                    key={filter}
+                    value={filter}
+                    className="cursor-pointer"
+                  >
+                    {filter}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Photo Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredPhotos.map((photo, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-14  md:gap-6">
+          {displayedPhotos.map((photo, index) => (
             <div
               key={photo.id}
               onClick={() => openModal(photo, index)}
-              className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer aspect-square h-64 w-full"
+              className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer aspect-square w-full"
             >
               {/* Image */}
               <img
@@ -134,17 +241,34 @@ const GaleriFoto = ({
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex flex-col items-center justify-center p-6">
-                <h3 className="text-white text-xl font-bold text-center opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 mb-3">
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex flex-col items-center justify-center p-4 md:p-6">
+                <h3 className="text-white text-base md:text-xl font-bold text-center opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 mb-2 md:mb-3 line-clamp-3">
                   {photo.title}
                 </h3>
-                <button className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 hover:text-white">
+                <button className="text-gray-300 text-xs md:text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 hover:text-white">
                   Lihat Foto
                 </button>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Intersection Observer Target & Loading Spinner */}
+        {hasMore && (
+          <div
+            ref={observerTarget}
+            className="flex justify-center items-center py-8 mt-8"
+          >
+            {isLoading && (
+              <div className="flex items-center gap-2 text-blue-600">
+                <Loader2 className="h-6 w-6 animate-spin" />
+                <span className="text-sm font-medium">
+                  Memuat lebih banyak...
+                </span>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Lightbox Modal */}
@@ -167,9 +291,9 @@ const GaleriFoto = ({
               e.stopPropagation();
               handlePreviousImage();
             }}
-            className="absolute left-4 text-white hover:text-gray-300 transition-colors z-50 bg-black bg-opacity-50 rounded-full p-2"
+            className="absolute left-2 md:left-4 text-white hover:text-gray-300 transition-colors z-50 bg-black bg-opacity-50 rounded-full p-2"
           >
-            <ChevronLeft size={40} />
+            <ChevronLeft size={32} className="md:w-10 md:h-10" />
           </button>
 
           {/* Next Button */}
@@ -178,9 +302,9 @@ const GaleriFoto = ({
               e.stopPropagation();
               handleNextImage();
             }}
-            className="absolute right-4 text-white hover:text-gray-300 transition-colors z-50 bg-black bg-opacity-50 rounded-full p-2"
+            className="absolute right-2 md:right-4 text-white hover:text-gray-300 transition-colors z-50 bg-black bg-opacity-50 rounded-full p-2"
           >
-            <ChevronRight size={40} />
+            <ChevronRight size={32} className="md:w-10 md:h-10" />
           </button>
 
           {/* Image Container */}
@@ -193,12 +317,12 @@ const GaleriFoto = ({
               <img
                 src={selectedPhoto.images[currentImageIndex]}
                 alt={selectedPhoto.title}
-                className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                className="max-w-full max-h-[70vh] md:max-h-[75vh] object-contain rounded-lg shadow-2xl"
               />
             </div>
 
             {/* Image Counter & Caption */}
-            <div className="bg-white rounded-lg px-4 py-3 shadow-lg max-w-md w-full">
+            <div className="bg-white rounded-lg px-4 py-3 shadow-lg max-w-md w-full mx-4">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs text-gray-500 font-medium">
                   {currentImageIndex + 1} / {selectedPhoto.images.length}
@@ -218,7 +342,7 @@ const GaleriFoto = ({
                   </div>
                 )}
               </div>
-              <h3 className="text-sm font-semibold text-gray-800 text-center">
+              <h3 className="text-sm font-semibold text-gray-800 text-center line-clamp-2">
                 {selectedPhoto.title}
               </h3>
             </div>

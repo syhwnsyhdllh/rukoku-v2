@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import NewsCard from "../NewsCard";
 
 const InfoTerkini = () => {
   // Data dummy berita - nanti akan diganti dengan API
@@ -57,47 +57,25 @@ const InfoTerkini = () => {
         {/* News Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {newsData.map((news) => (
-            <Card
+            <NewsCard
               key={news.id}
-              className="group cursor-pointer overflow-hidden border-none shadow-none transition-all duration-300 transform hover:-translate-y-1"
-              onClick={() => handleNewsClick(news.id, news.slug)}
-            >
-              {/* Image */}
-              <div className="relative h-48 sm:h-52 overflow-hidden rounded-3xl">
-                <img
-                  src={news.image}
-                  alt={news.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-
-              <CardContent className="p-5 sm:p-6 lg:pl-2">
-                {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-blue-950 mb-3 line-clamp-3 group-hover:text-[#046DC2] transition-colors duration-300 leading-snug">
-                  {news.title}
-                </h3>
-
-                {/* Date */}
-                <p className="text-xs sm:text-sm text-gray-500 mb-4">
-                  {news.date}
-                </p>
-
-                {/* Read More Link */}
-                <div className="flex items-center gap-2 text-[#046DC2] font-semibold text-sm group-hover:gap-3 transition-all duration-300">
-                  <span>Selengkapnya</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </CardContent>
-            </Card>
+              id={news.id}
+              title={news.title}
+              date={news.date}
+              image={news.image}
+              slug={news.slug}
+              onClick={handleNewsClick}
+            />
           ))}
         </div>
 
-        {/* Load More Button (Optional) */}
+        {/* Load More Button */}
         <div className="text-center mt-10 sm:mt-12">
-          <button className="px-6 sm:px-8 py-2.5 sm:py-3 bg-[#046DC2] text-white rounded-full hover:bg-[#1BA3E0] transition-colors duration-300 hover:shadow-lg text-sm sm:text-base">
-            Lihat Semua Berita
-          </button>
+          <Link href="/blog">
+            <button className="px-6 sm:px-8 py-2.5 sm:py-3 bg-[#046DC2] text-white rounded-full hover:bg-[#1BA3E0] transition-colors duration-300 hover:shadow-lg text-sm sm:text-base">
+              Lihat Semua Berita
+            </button>
+          </Link>
         </div>
       </div>
     </section>

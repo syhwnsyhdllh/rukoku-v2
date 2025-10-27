@@ -1,16 +1,17 @@
-// ============================================
-// components/KreasiCard.tsx - DENGAN AVATAR INITIAL
+// components/KreasiCard.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { generateSlug, formatDate, getSchoolBadgeColor } from "@/lib/utils";
+import { formatDate, getSchoolBadgeColor } from "@/lib/utils";
 
 interface Kreasi {
   id: number;
+  slug: string;
   title: string;
   school: string;
   author: string;
+  class: string;
   date: string;
-  image: string;
+  thumbnail: string;
   authorAvatar?: string;
 }
 
@@ -70,7 +71,6 @@ const AuthorAvatar = ({
 
 // Card Component
 const KreasikuCard = ({ kreasi }: KreasiCardProps) => {
-  const slug = generateSlug(kreasi.title);
   const badgeColor = getSchoolBadgeColor(kreasi.school);
 
   // Mapping warna ke class Tailwind yang lengkap
@@ -84,13 +84,13 @@ const KreasikuCard = ({ kreasi }: KreasiCardProps) => {
 
   return (
     <Link
-      href={`/kreasiku/${slug}`}
+      href={`/kreasiku/${kreasi.slug}`}
       className="group block bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300"
     >
       {/* Image Container */}
       <div className="relative h-48 w-full overflow-hidden">
         <Image
-          src={kreasi.image}
+          src={kreasi.thumbnail}
           alt={kreasi.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -135,7 +135,7 @@ const KreasikuCard = ({ kreasi }: KreasiCardProps) => {
 // Grid Component
 const KreasikuGrid = ({ kreasis }: KreasiGridProps) => {
   return (
-    <div className="max-w-7xl px-5 lg:px-0 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="max-w-7xl px-4 lg:px-0 mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {kreasis.map((kreasi) => (
         <KreasikuCard key={kreasi.id} kreasi={kreasi} />
       ))}

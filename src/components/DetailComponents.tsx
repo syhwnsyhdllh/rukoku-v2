@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Facebook,
   Twitter,
@@ -7,6 +7,11 @@ import {
   Calendar,
   User,
   Download,
+  GraduationCap,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  School,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -17,31 +22,46 @@ const WhatsAppIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+interface MediaItem {
+  type: "image" | "video";
+  url: string;
+  thumbnail?: string;
+}
+
 interface ArticleDetailProps {
-  category: string;
+  category?: string;
+  school?: string;
   title: string;
   date: string;
   author: string;
-  featuredImage: string;
+  class?: string;
+  featuredImage?: string;
+  media?: MediaItem[];
   content: string | React.ReactNode;
   downloadUrl?: string;
   downloadFileName?: string;
-  type?: "blog" | "materi";
+  type?: "blog" | "materi" | "kreasi";
   backUrl?: string;
 }
 
 const DetailComponent: React.FC<ArticleDetailProps> = ({
   category,
+  school,
   title,
   date,
   author,
+  class: studentClass,
   featuredImage,
+  media = [],
   content,
   downloadUrl,
   downloadFileName = "materi.pdf",
   type = "blog",
   backUrl = "/blog",
 }) => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const encodedUrl = encodeURIComponent(currentUrl);
   const encodedTitle = encodeURIComponent(title);
@@ -71,6 +91,22 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
     document.body.removeChild(link);
   };
 
+  const openLightbox = (index: number) => {
+    setCurrentMediaIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const nextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev + 1) % media.length);
+  };
+
+  const prevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev - 1 + media.length) % media.length);
+  };
+
+  // Tidak tampilkan badge untuk kreasi
+  const displayCategory = type === "kreasi" ? null : category;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-sm bg-white/90">
@@ -84,6 +120,7 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
           </Link>
         </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Sidebar - Share Buttons (Desktop) */}
@@ -120,25 +157,89 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
           </aside>
 
           {/* Main Content */}
-          <main className="lg:col-span-10">
+          <main className="lg:col-span-11">
             <article className="overflow-hidden">
-              {/* Featured Image with Overlay */}
-              <div className="relative w-full aspect-[21/12] sm:aspect-[16/8] rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
-                <img
-                  src={featuredImage}
-                  alt={title}
-                  className="w-full h-full object-cover rounded-2xl"
-                />
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div> */}
+              {/* Featured Image or Media Gallery */}
+              {type === "kreasi" && media.length > 0 ? (
+                <div className="mb-8">
+                  {/* Main Media - Tanpa Badge */}
+                  <div className="relative w-full aspect-video rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden mb-4">
+                    {media[0].type === "video" ? (
+                      <iframe
+                        src={media[0].url}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <img
+                        src={media[0].url}
+                        alt={title}
+                        className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                        onClick={() => openLightbox(0)}
+                      />
+                    )}
+                  </div>
 
-                {/* Category Badge on Image */}
-                <div className="absolute lg:top-6 lg:left-6 left-3 top-3">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/75 backdrop-blur-sm text-blue-700 text-xs lg:text-sm font-bold rounded-full shadow-lg lg:border lg:border-blue-100">
-                    <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                    {category}
-                  </span>
+                  {/* Thumbnail Grid */}
+                  {media.length > 1 && (
+                    <div className="grid grid-cols-4 gap-2">
+                      {media.slice(1, 5).map((item, index) => (
+                        <div
+                          key={index + 1}
+                          className="relative aspect-video rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                          onClick={() => openLightbox(index + 1)}
+                        >
+                          {item.type === "video" ? (
+                            <div className="relative w-full h-full">
+                              <img
+                                src={item.thumbnail || media[0].url}
+                                alt={`Media ${index + 2}`}
+                                className="w-full h-full object-cover"
+                              />
+                              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
+                                  <div className="w-0 h-0 border-l-8 border-l-blue-600 border-t-4 border-t-transparent border-b-4 border-b-transparent ml-1"></div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <img
+                              src={item.url}
+                              alt={`Media ${index + 2}`}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                          {index === 3 && media.length > 5 && (
+                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-bold">
+                              +{media.length - 5}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
+              ) : (
+                /* Regular Featured Image for Blog/Materi */
+                featuredImage && (
+                  <div className="relative w-full aspect-[21/12] sm:aspect-[16/8] rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden mb-8">
+                    <img
+                      src={featuredImage}
+                      alt={title}
+                      className="w-full h-full object-cover rounded-2xl"
+                    />
+                    {displayCategory && (
+                      <div className="absolute lg:top-6 lg:left-6 left-3 top-3">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/75 backdrop-blur-sm text-blue-700 text-xs lg:text-sm font-bold rounded-full shadow-lg lg:border lg:border-blue-100">
+                          <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
+                          {displayCategory}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )
+              )}
 
               {/* Header Content */}
               <div className="p-4 sm:p-8 lg:p-12">
@@ -149,6 +250,7 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
 
                 {/* Meta Info with Icons */}
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 pb-8 mb-8 border-b-2 border-gray-100">
+                  {/* Tanggal */}
                   <div className="flex items-center gap-2 text-gray-600">
                     <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
                       <Calendar className="w-5 h-5 text-blue-600" />
@@ -168,6 +270,7 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
 
                   <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
 
+                  {/* Penulis */}
                   <div className="flex items-center gap-2 text-gray-600">
                     <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
                       <User className="w-5 h-5 text-purple-600" />
@@ -181,6 +284,46 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
                       </span>
                     </div>
                   </div>
+
+                  {/* Sekolah (Only for Kreasi) */}
+                  {type === "kreasi" && school && (
+                    <>
+                      <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                          <School className="w-5 h-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium">
+                            Sekolah
+                          </p>
+                          <span className="text-sm font-semibold text-blue-950">
+                            {school}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Kelas (Only for Kreasi) */}
+                  {type === "kreasi" && studentClass && (
+                    <>
+                      <div className="hidden sm:block w-px h-10 bg-gray-200"></div>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                          <GraduationCap className="w-5 h-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium">
+                            Kelas
+                          </p>
+                          <span className="text-sm font-semibold text-blue-950">
+                            {studentClass}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -288,7 +431,7 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
                         />
                       </svg>
                     </span>
-                    Bagikan Artikel
+                    Bagikan {type === "kreasi" ? "Kreasi" : "Artikel"}
                   </h3>
                   <div className="flex flex-wrap gap-3">
                     <button
@@ -319,6 +462,77 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
           </main>
         </div>
       </div>
+
+      {/* Lightbox Modal for Media Gallery */}
+      {lightboxOpen && media.length > 0 && (
+        <div
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          <div className="relative w-full h-full flex items-center justify-center px-4 sm:px-16">
+            {/* Previous Button */}
+            {media.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevMedia();
+                }}
+                className="absolute left-4 text-white hover:text-gray-300 z-50"
+              >
+                <ChevronLeft className="w-12 h-12" />
+              </button>
+            )}
+
+            {/* Media Content */}
+            <div
+              className="max-w-6xl max-h-[90vh] w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {media[currentMediaIndex].type === "video" ? (
+                <div className="aspect-video w-full">
+                  <iframe
+                    src={media[currentMediaIndex].url}
+                    className="w-full h-full rounded-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <img
+                  src={media[currentMediaIndex].url}
+                  alt={`Media ${currentMediaIndex + 1}`}
+                  className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                />
+              )}
+
+              {/* Counter */}
+              <div className="text-center text-white mt-4 text-sm">
+                {currentMediaIndex + 1} / {media.length}
+              </div>
+            </div>
+
+            {/* Next Button */}
+            {media.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextMedia();
+                }}
+                className="absolute right-4 text-white hover:text-gray-300 z-50"
+              >
+                <ChevronRight className="w-12 h-12" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

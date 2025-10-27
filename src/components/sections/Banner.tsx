@@ -18,7 +18,7 @@ const BannerSection = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-5 lg:px-20">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 lg:px-20">
       <div className=" mx-auto">
         <div
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden"

@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getKreasiList } from "@/lib/kreasiData";
 
 const Kreasiku = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,153 +22,8 @@ const Kreasiku = () => {
   const [isLoading, setIsLoading] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const kreasis = [
-    {
-      id: 1,
-      title: "Daun Botto Botto obat Luka Luar",
-      school: "SDN BONTOMAEKU 2",
-      author: "Ayudia Shakila",
-      date: "2022-07-07",
-      image:
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-    },
-    {
-      id: 2,
-      title: "Mengenal Warna dan Bentuk Dasar",
-      school: "TK/PAUD BONTOBILA",
-      author: "Dewi Sartika",
-      date: "2023-06-05",
-      image:
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=800&fit=crop",
-    },
-    {
-      id: 3,
-      title: "Eksperimen Kimia Sederhana",
-      school: "SMP NEGERI BONTOBILA",
-      author: "Ahmad Rizki",
-      date: "2023-06-05",
-      image:
-        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&h=800&fit=crop",
-    },
-    {
-      id: 4,
-      title: "Membuat Robot dari Kardus Bekas",
-      school: "SD INPRES BONTOBILA",
-      author: "Siti Nurhaliza",
-      date: "2023-06-05",
-      image:
-        "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=800&fit=crop",
-    },
-    {
-      id: 5,
-      title: "Proyek Sains: Volcano",
-      school: "SDN BONTOMAEKU 2",
-      author: "Budi Santoso",
-      date: "2023-08-15",
-      image:
-        "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=800&fit=crop",
-    },
-    {
-      id: 6,
-      title: "Menggambar dan Mewarnai",
-      school: "TK/PAUD BONTOBILA",
-      author: "Rina Melati",
-      date: "2023-09-10",
-      image:
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=800&fit=crop",
-    },
-    {
-      id: 7,
-      title: "Penelitian Fotosintesis Tumbuhan",
-      school: "SMP NEGERI BONTOBILA",
-      author: "Allisa Mayer",
-      date: "2023-10-05",
-      image:
-        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=800&fit=crop",
-    },
-    {
-      id: 8,
-      title: "Belajar Berhitung dengan Permainan",
-      school: "SD INPRES BONTOBILA",
-      author: "Rudi Hartono",
-      date: "2023-10-20",
-      image:
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=800&fit=crop",
-    },
-    {
-      id: 9,
-      title: "Sistem Tata Surya Mini",
-      school: "SDN BONTOMAEKU 2",
-      author: "Putri Ayu",
-      date: "2023-11-05",
-      image:
-        "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=800&fit=crop",
-    },
-    {
-      id: 10,
-      title: "Bernyanyi dan Bercerita",
-      school: "TK/PAUD BONTOBILA",
-      author: "Maya Safitri",
-      date: "2023-11-15",
-      image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=800&fit=crop",
-    },
-    {
-      id: 11,
-      title: "Percobaan Listrik Statis",
-      school: "SMP NEGERI BONTOBILA",
-      author: "Eko Prasetyo",
-      date: "2023-12-01",
-      image:
-        "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800&h=800&fit=crop",
-    },
-    {
-      id: 12,
-      title: "Membuat Kerajinan dari Kertas",
-      school: "SD INPRES BONTOBILA",
-      author: "Lina Marlina",
-      date: "2023-12-10",
-      image:
-        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&h=800&fit=crop",
-    },
-    // Tambahkan data dummy untuk testing infinite scroll
-    {
-      id: 13,
-      title: "Membuat Kompos dari Sampah Organik",
-      school: "SDN BONTOMAEKU 2",
-      author: "Andi Wijaya",
-      date: "2024-01-15",
-      image:
-        "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&h=800&fit=crop",
-    },
-    {
-      id: 14,
-      title: "Kerajinan dari Sedotan",
-      school: "TK/PAUD BONTOBILA",
-      author: "Sari Indah",
-      date: "2024-01-20",
-      image:
-        "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&h=800&fit=crop",
-    },
-    {
-      id: 15,
-      title: "Percobaan Magnet",
-      school: "SMP NEGERI BONTOBILA",
-      author: "Reza Pratama",
-      date: "2024-02-01",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop",
-    },
-    {
-      id: 16,
-      title: "Belajar Angka dengan Lego",
-      school: "SD INPRES BONTOBILA",
-      author: "Nina Kartika",
-      date: "2024-02-10",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=800&fit=crop",
-    },
-  ];
+  // Gunakan data dari kreasiData.ts
+  const kreasis = getKreasiList();
 
   // Filter options
   const schoolFilters = [

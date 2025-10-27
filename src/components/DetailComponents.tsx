@@ -73,7 +73,6 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
-      {/* Header with Back Button */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-sm bg-white/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Link
@@ -85,12 +84,11 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
           </Link>
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Sidebar - Share Buttons (Desktop) */}
-          <aside className="hidden lg:block lg:col-span-2">
-            <div className="sticky top-24 space-y-4">
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-28 space-y-4">
               <p className="text-sm font-semibold text-gray-700 mb-3">
                 Bagikan
               </p>
@@ -123,19 +121,19 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
 
           {/* Main Content */}
           <main className="lg:col-span-10">
-            <article className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+            <article className="overflow-hidden">
               {/* Featured Image with Overlay */}
-              <div className="relative w-full aspect-[21/9] sm:aspect-video bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
+              <div className="relative w-full aspect-[21/12] sm:aspect-[16/8] rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden">
                 <img
                   src={featuredImage}
                   alt={title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-2xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div> */}
 
                 {/* Category Badge on Image */}
-                <div className="absolute top-6 left-6">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm text-blue-700 text-sm font-bold rounded-full shadow-lg border border-blue-100">
+                <div className="absolute lg:top-6 lg:left-6 left-3 top-3">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/75 backdrop-blur-sm text-blue-700 text-xs lg:text-sm font-bold rounded-full shadow-lg lg:border lg:border-blue-100">
                     <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
                     {category}
                   </span>
@@ -143,9 +141,9 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
               </div>
 
               {/* Header Content */}
-              <div className="p-6 sm:p-8 lg:p-12">
+              <div className="p-4 sm:p-8 lg:p-12">
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-950 mb-6 leading-tight">
                   {title}
                 </h1>
 
@@ -161,7 +159,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
                       </p>
                       <time
                         dateTime={date}
-                        className="text-sm font-semibold text-gray-900"
+                        className="text-sm font-semibold text-blue-950"
                       >
                         {date}
                       </time>
@@ -178,7 +176,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
                       <p className="text-xs text-gray-500 font-medium">
                         Penulis
                       </p>
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-sm font-semibold text-blue-950">
                         {author}
                       </span>
                     </div>
@@ -250,7 +248,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
                           <Download className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900 mb-1">
+                          <h3 className="text-lg font-bold text-blue-950 mb-1">
                             Download Materi Lengkap
                           </h3>
                           <p className="text-sm text-gray-600">
@@ -274,7 +272,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
 
                 {/* Mobile Share Buttons */}
                 <div className="lg:hidden mt-12 pt-8 border-t-2 border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-blue-950 mb-4 flex items-center gap-2">
                     <span className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-blue-600"

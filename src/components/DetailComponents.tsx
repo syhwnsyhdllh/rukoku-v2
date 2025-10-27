@@ -30,7 +30,7 @@ interface ArticleDetailProps {
   backUrl?: string;
 }
 
-const ArticleDetail: React.FC<ArticleDetailProps> = ({
+const DetailComponent: React.FC<ArticleDetailProps> = ({
   category,
   title,
   date,
@@ -323,4 +323,4 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({
   );
 };
 
-export default ArticleDetail;
+export default DetailComponent;

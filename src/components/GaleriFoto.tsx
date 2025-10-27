@@ -226,12 +226,12 @@ const GaleriFoto = ({
         </div>
 
         {/* Photo Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-14  md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-14  md:gap-6">
           {displayedPhotos.map((photo, index) => (
             <div
               key={photo.id}
               onClick={() => openModal(photo, index)}
-              className="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer aspect-square w-full"
+              className="group relative ratio overflow-hidden rounded-2xl shadow-lg cursor-pointer aspect-[1/0.8] w-full"
             >
               {/* Image */}
               <img

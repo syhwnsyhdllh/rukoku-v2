@@ -60,7 +60,7 @@ const HeroSection = ({
                 src={imageSrc}
                 alt={imageAlt}
                 fill
-                className="object-contain"
+                className="object-contain animate-float"
                 priority
               />
               {/* Decorative elements */}

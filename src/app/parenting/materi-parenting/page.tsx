@@ -3,157 +3,29 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import HeroSection from "@/components/HeroSection";
 import EventCard from "@/components/EventCard";
 import { Loader2, Search, X } from "lucide-react";
+import { getMateriList } from "@/lib/materiData";
+import { useRouter } from "next/navigation";
 
 const MateriParenting = () => {
+  const router = useRouter();
+  const materiList = getMateriList();
+
   const [displayedCount, setDisplayedCount] = useState(8);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  // Data materi parenting
-  const materiParenting = [
-    {
-      id: 1,
-      image: "/images/materi/pola-asuh.jpg",
-      title: "Pola Asuh Positif untuk Anak",
-      date: "10 November 2025",
-      author: "Dr. Budi Santoso",
-      position: "Psikolog Anak",
-    },
-    {
-      id: 2,
-      image: "/images/materi/komunikasi.jpg",
-      title: "Komunikasi Efektif dengan Anak",
-      date: "15 November 2025",
-      author: "Prof. Dr. Siti Aminah",
-      position: "Pakar Komunikasi Keluarga",
-    },
-    {
-      id: 3,
-      image: "/images/materi/emosi.jpg",
-      title: "Mengelola Emosi Anak dengan Bijak",
-      date: "18 November 2025",
-      author: "Dra. Rina Kusuma",
-      position: "Konselor Keluarga",
-    },
-    {
-      id: 4,
-      image: "/images/materi/digital.jpg",
-      title: "Parenting di Era Digital",
-      date: "22 November 2025",
-      author: "Ahmad Fauzi, M.Psi",
-      position: "Psikolog Klinis",
-    },
-    {
-      id: 5,
-      image: "/images/materi/belajar.jpg",
-      title: "Mendampingi Anak Belajar di Rumah",
-      date: "25 November 2025",
-      author: "Dr. Lina Wati",
-      position: "Pendidik & Praktisi Parenting",
-    },
-    {
-      id: 6,
-      image: "/images/materi/karakter.jpg",
-      title: "Membangun Karakter Anak Sejak Dini",
-      date: "28 November 2025",
-      author: "H. Muhammad Yusuf, S.Pd",
-      position: "Kepala Sekolah & Motivator",
-    },
-    {
-      id: 7,
-      image: "/images/materi/tantrum.jpg",
-      title: "Mengatasi Tantrum pada Anak",
-      date: "1 Desember 2025",
-      author: "Nurul Hidayah, M.Psi",
-      position: "Child Development Specialist",
-    },
-    {
-      id: 8,
-      image: "/images/materi/quality-time.jpg",
-      title: "Pentingnya Quality Time Bersama Anak",
-      date: "5 Desember 2025",
-      author: "Drs. Bambang Widodo",
-      position: "Family Counselor",
-    },
-    {
-      id: 9,
-      image: "/images/materi/tumbuh-kembang.jpg",
-      title: "Stimulasi Tumbuh Kembang Anak Optimal",
-      date: "8 Desember 2025",
-      author: "dr. Ani Wijaya, Sp.A",
-      position: "Dokter Spesialis Anak",
-    },
-    {
-      id: 10,
-      image: "/images/materi/disiplin.jpg",
-      title: "Disiplin Positif untuk Anak",
-      date: "12 Desember 2025",
-      author: "Dr. Budi Santoso",
-      position: "Psikolog Anak",
-    },
-    {
-      id: 11,
-      image: "/images/materi/kreativitas.jpg",
-      title: "Mengembangkan Kreativitas Anak",
-      date: "15 Desember 2025",
-      author: "Dra. Rina Kusuma",
-      position: "Konselor Keluarga",
-    },
-    {
-      id: 12,
-      image: "/images/materi/percaya-diri.jpg",
-      title: "Membangun Kepercayaan Diri Anak",
-      date: "18 Desember 2025",
-      author: "Ahmad Fauzi, M.Psi",
-      position: "Psikolog Klinis",
-    },
-    {
-      id: 13,
-      image: "/images/materi/gizi.jpg",
-      title: "Nutrisi dan Gizi Seimbang untuk Anak",
-      date: "22 Desember 2025",
-      author: "dr. Ani Wijaya, Sp.A",
-      position: "Dokter Spesialis Anak",
-    },
-    {
-      id: 14,
-      image: "/images/materi/teknologi.jpg",
-      title: "Mengatur Screen Time Anak",
-      date: "25 Desember 2025",
-      author: "Prof. Dr. Siti Aminah",
-      position: "Pakar Komunikasi Keluarga",
-    },
-    {
-      id: 15,
-      image: "/images/materi/sosialisasi.jpg",
-      title: "Keterampilan Sosial pada Anak",
-      date: "28 Desember 2025",
-      author: "Nurul Hidayah, M.Psi",
-      position: "Child Development Specialist",
-    },
-    {
-      id: 16,
-      image: "/images/materi/motivasi.jpg",
-      title: "Memotivasi Anak untuk Belajar",
-      date: "2 Januari 2026",
-      author: "Dr. Lina Wati",
-      position: "Pendidik & Praktisi Parenting",
-    },
-  ];
-
   // Filter based on search query
   const filteredMateri = useMemo(() => {
-    if (!searchQuery) return materiParenting;
+    if (!searchQuery) return materiList;
 
     const query = searchQuery.toLowerCase();
-    return materiParenting.filter(
+    return materiList.filter(
       (materi) =>
         materi.title.toLowerCase().includes(query) ||
-        materi.author.toLowerCase().includes(query) ||
-        materi.position.toLowerCase().includes(query)
+        materi.author.toLowerCase().includes(query)
     );
-  }, [searchQuery]);
+  }, [searchQuery, materiList]);
 
   // Get displayed items
   const displayedMateri = useMemo(() => {
@@ -177,7 +49,6 @@ const MateriParenting = () => {
 
     setIsLoading(true);
 
-    // Simulate API delay
     setTimeout(() => {
       const increment =
         typeof window !== "undefined" && window.innerWidth >= 768 ? 8 : 6;
@@ -235,7 +106,7 @@ const MateriParenting = () => {
       />
 
       {/* Materials Grid Section */}
-      <section className="pb-20 px-4">
+      <section className="px-4">
         <div className="max-w-7xl mx-auto">
           {/* Search Bar */}
           <div className="mb-8">
@@ -245,7 +116,7 @@ const MateriParenting = () => {
               </div>
               <input
                 type="text"
-                placeholder="Cari materi berdasarkan judul, penulis, atau topik..."
+                placeholder="Cari materi berdasarkan judul atau penulis..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-12 pl-12 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
@@ -292,16 +163,17 @@ const MateriParenting = () => {
                 {displayedMateri.map((materi) => (
                   <EventCard
                     key={materi.id}
-                    image={materi.image}
+                    image={materi.featuredImage}
                     title={materi.title}
                     date={materi.date}
                     showMetadataLabel={true}
                     metadata={{
                       label: "Penulis",
                       value: materi.author,
-                      subLabel: materi.position,
                     }}
-                    onClick={() => console.log("Clicked:", materi.title)}
+                    onClick={() =>
+                      router.push(`/parenting/materi-parenting/${materi.slug}`)
+                    }
                   />
                 ))}
               </div>
@@ -322,6 +194,15 @@ const MateriParenting = () => {
                   )}
                 </div>
               )}
+
+              {/* End Message */}
+              {!hasMore && filteredMateri.length > 8 && (
+                <div className="text-center py-8">
+                  <p className="text-sm text-gray-500">
+                    Semua materi telah ditampilkan
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             /* Empty State */
@@ -335,6 +216,13 @@ const MateriParenting = () => {
               <p className="text-gray-500 text-center mb-6 max-w-md">
                 Tidak ada materi yang cocok dengan pencarian "{searchQuery}"
               </p>
+              <button
+                onClick={clearSearch}
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+              >
+                <X className="h-4 w-4" />
+                Hapus Pencarian
+              </button>
             </div>
           )}
         </div>

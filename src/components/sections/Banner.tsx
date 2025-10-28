@@ -18,8 +18,8 @@ const BannerSection = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-4 lg:px-20">
-      <div className=" mx-auto">
+    <section className="relative z-10 py-12 sm:py-16 px-4 lg:px-24 xl:px-40 -mb-20 sm:-mb-24 lg:-mb-32">
+      <div className="mx-auto">
         <div
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden"
           style={{
@@ -27,7 +27,7 @@ const BannerSection = () => {
           }}
         >
           {/* Content Container */}
-          <div className="relative z-10 px-6 sm:px-10 lg:px-28 py-10 sm:py-12 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="relative z-10 px-6 sm:px-10 lg:px-20 xl:px-28 py-10 sm:py-12 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-8">
             {/* Left Content */}
             <div className="text-white max-w-xl text-center lg:text-left">
               <h2 className="text-3xl lg:text-[48px] font-bold lg:mb-7">

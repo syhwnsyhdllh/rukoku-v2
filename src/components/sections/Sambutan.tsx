@@ -108,7 +108,7 @@ export default function Testimonial() {
                   <div
                     className={`absolute ${
                       item.align === "left" ? "left-0" : "right-0"
-                    } w-[380px] lg:w-[420px] h-[400px] lg:h-[540px] -top-0 lg:-top-[5.6rem] z-10`}
+                    } md:w-[280px] lg:w-[340px] xl:w-[420px] md:h-[320px] lg:h-[400px] xl:h-[540px] -top-0 md:-top-8 lg:-top-16 xl:-top-[5.6rem] z-10`}
                   >
                     <img
                       src={item.image}
@@ -125,21 +125,21 @@ export default function Testimonial() {
                   <div
                     className={`bg-[#1BA3E0] rounded-3xl shadow-xl flex ${
                       item.align === "left" ? "flex-row" : "flex-row-reverse"
-                    } h-[400px] lg:h-[450px]`}
+                    } md:h-[288px] lg:h-[335px] xl:h-[450px]`}
                   >
                     {/* Spacer for Image */}
-                    <div className="w-[380px] lg:w-[420px] shrink-0"></div>
+                    <div className="md:w-[280px] lg:w-[340px] xl:w-[420px] shrink-0"></div>
 
                     {/* Content Side */}
-                    <div className="flex-1 p-10 lg:p-16 flex flex-col justify-center text-white">
-                      <p className="text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed mb-6 md:mb-8">
+                    <div className="flex-1 md:p-6 lg:p-10 xl:p-16 flex flex-col justify-center text-white">
+                      <p className="text-sm md:text-base lg:text-lg xl:text-2xl leading-relaxed md:mb-4 lg:mb-6 xl:mb-8">
                         {item.quote}
                       </p>
                       <div>
-                        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-1 md:mb-2">
+                        <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-1 md:mb-1 lg:mb-2">
                           {item.name}
                         </h3>
-                        <p className="text-sm md:text-base lg:text-lg opacity-90">
+                        <p className="text-xs md:text-sm lg:text-base xl:text-lg opacity-90">
                           {item.position}
                         </p>
                       </div>

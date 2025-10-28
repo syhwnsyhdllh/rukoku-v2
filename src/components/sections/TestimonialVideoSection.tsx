@@ -249,12 +249,12 @@ const TestimonialVideoSection = () => {
         <div className="mx-auto">
           {/* Header */}
           <div className="text-center mb-8 sm:mb-12">
-            <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="flex items-center justify-center gap-3">
               <h2 className="text-3xl mb-4 sm:text-4xl lg:text-5xl font-bold text-blue-950 leading-tight">
                 Apa Kata Mereka Soal RUKOKU?
               </h2>
             </div>
-            <p className="text-sm sm:text-base text-gray-600 mt-2">
+            <p className="text-sm sm:text-base text-gray-600">
               Testimoni Orang Tua, Guru, Kepala Sekolah, Pengawas Sekolah, Siswa
             </p>
           </div>

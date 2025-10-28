@@ -1,105 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
 import EventCard from "@/components/EventCard";
+import { getParentingEventsForList } from "@/lib/parenting-events";
 
 const AgendaParenting = () => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
-  // Data agenda parenting
-  const parentingEvents = [
-    {
-      id: 1,
-      image: "/images/parenting/workshop1.jpg",
-      title: "Workshop Pola Asuh Anak Usia Dini",
-      date: "15 November 2025",
-      time: "09:00 - 12:00",
-      badge: "Gratis",
-      speaker: "Dr. Budi Santoso",
-      position: "Psikolog Anak",
-    },
-    {
-      id: 2,
-      image: "/images/parenting/seminar1.jpg",
-      title: "Seminar Komunikasi Efektif dengan Anak",
-      date: "20 November 2025",
-      time: "13:00 - 16:00",
-      badge: "Gratis",
-      speaker: "Prof. Dr. Siti Aminah",
-      position: "Pakar Komunikasi Keluarga",
-    },
-    {
-      id: 3,
-      image: "/images/parenting/workshop2.jpg",
-      title: "Pelatihan Mengelola Emosi Anak",
-      date: "25 November 2025",
-      time: "10:00 - 13:00",
-      badge: "Gratis",
-      speaker: "Dra. Rina Kusuma",
-      position: "Konselor Keluarga",
-    },
-    {
-      id: 4,
-      image: "/images/parenting/talkshow1.jpg",
-      title: "Talkshow Parenting di Era Digital",
-      date: "1 Desember 2025",
-      time: "14:00 - 17:00",
-      badge: "Gratis",
-      speaker: "Ahmad Fauzi, M.Psi",
-      position: "Psikolog Klinis",
-    },
-    {
-      id: 5,
-      image: "/images/parenting/workshop3.jpg",
-      title: "Workshop Mendampingi Belajar Anak",
-      date: "5 Desember 2025",
-      time: "09:00 - 12:00",
-      badge: "Gratis",
-      speaker: "Dr. Lina Wati",
-      position: "Pendidik & Praktisi Parenting",
-    },
-    {
-      id: 6,
-      image: "/images/parenting/seminar2.jpg",
-      title: "Seminar Membangun Karakter Anak",
-      date: "10 Desember 2025",
-      time: "13:00 - 16:00",
-      badge: "Gratis",
-      speaker: "H. Muhammad Yusuf, S.Pd",
-      position: "Kepala Sekolah & Motivator",
-    },
-    {
-      id: 7,
-      image: "/images/parenting/workshop4.jpg",
-      title: "Pelatihan Mengatasi Tantrum pada Anak",
-      date: "15 Desember 2025",
-      time: "10:00 - 13:00",
-      badge: "Gratis",
-      speaker: "Nurul Hidayah, M.Psi",
-      position: "Child Development Specialist",
-    },
-    {
-      id: 8,
-      image: "/images/parenting/talkshow2.jpg",
-      title: "Talkshow Pentingnya Quality Time",
-      date: "20 Desember 2025",
-      time: "14:00 - 17:00",
-      badge: "Gratis",
-      speaker: "Drs. Bambang Widodo",
-      position: "Family Counselor",
-    },
-    {
-      id: 9,
-      image: "/images/parenting/workshop5.jpg",
-      title: "Workshop Stimulasi Tumbuh Kembang Anak",
-      date: "28 Desember 2025",
-      time: "09:00 - 12:00",
-      badge: "Gratis",
-      speaker: "dr. Ani Wijaya, Sp.A",
-      position: "Dokter Spesialis Anak",
-    },
-  ];
+  // Get data from lib
+  const parentingEvents = getParentingEventsForList();
 
   // Detect screen size and set items per page
   useEffect(() => {
@@ -141,7 +53,7 @@ const AgendaParenting = () => {
       />
 
       {/* Events Grid Section */}
-      <section className="py-12 md:py-16 px-4">
+      <section className="py-12 md:py-10 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Events Grid - Responsive: 2 cols (mobile), 4 cols (tablet & desktop) */}
           <div className="min-h-[600px] md:min-h-[650px]">
@@ -152,8 +64,8 @@ const AgendaParenting = () => {
                   image={event.image}
                   title={event.title}
                   date={event.date}
-                  badge={event.badge}
-                  badgePosition="overlay"
+                  price={event.isPaid ? "Berbayar" : "Gratis"}
+                  pricePosition="overlay"
                   time={event.time}
                   showMetadataLabel={true}
                   metadata={{
@@ -161,7 +73,9 @@ const AgendaParenting = () => {
                     value: event.speaker,
                     subLabel: event.position,
                   }}
-                  onClick={() => console.log("Clicked:", event.title)}
+                  onClick={() =>
+                    router.push(`/parenting/agenda-parenting/${event.slug}`)
+                  }
                 />
               ))}
             </div>

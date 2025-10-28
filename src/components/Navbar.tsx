@@ -98,7 +98,7 @@ const Navbar = () => {
               <Image
                 src="/images/logoRukoku.png"
                 alt="RUKOKU Logo"
-                className="h-10 md:h-12 lg:h-14 w-auto object-contain"
+                className="h-10 lg:h-12 xl:h-14 w-auto object-contain"
                 width={150}
                 height={50}
                 priority
@@ -106,7 +106,7 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop Navigation - Hidden until lg */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-1 ml-8 xl:ml-20">
+            <nav className="hidden lg:flex items-center gap-3 xl:gap-6 flex-1 lg:ml-4 xl:ml-12 flex-nowrap">
               {menuItems.map((item, index) => {
                 const itemIsActive = item.dropdown
                   ? isParentActive(item.dropdown)
@@ -117,7 +117,7 @@ const Navbar = () => {
                     {item.dropdown ? (
                       <>
                         <button
-                          className={`font-medium transition-colors duration-300 relative group flex items-center gap-1 text-sm xl:text-base ${
+                          className={`font-medium transition-colors duration-300 relative group flex items-center gap-1 lg:text-[15px] xl:text-base whitespace-nowrap ${
                             itemIsActive
                               ? "text-[#046DC2] font-bold"
                               : "text-gray-700 hover:text-[#046DC2]"
@@ -159,7 +159,7 @@ const Navbar = () => {
                     ) : (
                       <Link
                         href={item.href}
-                        className={`font-medium transition-colors duration-300 relative group text-sm xl:text-base ${
+                        className={`font-medium transition-colors duration-300 relative group lg:text-[15px] xl:text-base whitespace-nowrap ${
                           itemIsActive
                             ? "text-[#046DC2] font-bold"
                             : "text-gray-700 hover:text-[#046DC2]"
@@ -179,10 +179,10 @@ const Navbar = () => {
             </nav>
 
             {/* Right Actions - Desktop */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-8 shrink-0">
+            <div className="hidden lg:flex items-center gap-2 xl:gap-6 shrink-0">
               <Link
                 href="/sahabat-peduli-anak"
-                className={`font-medium transition-colors duration-300 whitespace-nowrap relative group text-sm xl:text-base ${
+                className={`font-medium transition-colors duration-300 whitespace-nowrap relative group lg:text-[15px] xl:text-base ${
                   isActive("/sahabat-peduli-anak")
                     ? "text-[#046DC2] font-bold"
                     : "text-gray-700 hover:text-blue-600"
@@ -199,7 +199,7 @@ const Navbar = () => {
               </Link>
               <Link
                 href="/hope-care"
-                className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white px-4 xl:px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap hover:shadow-lg transform hover:scale-105 text-sm xl:text-base"
+                className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white lg:px-4 xl:px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap hover:shadow-lg transform hover:scale-105 lg:text-[15px] xl:text-base"
               >
                 Hope & Care
               </Link>

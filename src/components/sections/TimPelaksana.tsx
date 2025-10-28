@@ -148,7 +148,7 @@ const TimPelaksana = () => {
   }, []);
 
   return (
-    <section className="mx-auto px-4 sm:px-6 lg:px-48 py-12 lg:py-20 mb-16">
+    <section className="mx-auto px-4 sm:px-6 md:px-8 lg:px-8 xl:px-48 py-12 lg:py-20 mb-16">
       <style jsx>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
@@ -201,7 +201,7 @@ const TimPelaksana = () => {
         {teamMembers.map((member, index) => (
           <Card
             key={index}
-            className={`team-card rounded-3xl flex-shrink-0 w-[85vw] sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] overflow-hidden border-0 ${member.bgColor} snap-start`}
+            className={`team-card rounded-3xl flex-shrink-0 w-[85vw] sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] overflow-hidden border-0 ${member.bgColor} snap-start`}
           >
             <CardContent className="p-0">
               <div className="relative group">

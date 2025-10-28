@@ -194,15 +194,6 @@ const MateriParenting = () => {
                   )}
                 </div>
               )}
-
-              {/* End Message */}
-              {!hasMore && filteredMateri.length > 8 && (
-                <div className="text-center py-8">
-                  <p className="text-sm text-gray-500">
-                    Semua materi telah ditampilkan
-                  </p>
-                </div>
-              )}
             </>
           ) : (
             /* Empty State */

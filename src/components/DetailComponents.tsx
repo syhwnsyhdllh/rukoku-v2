@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   School,
+  Images,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -163,7 +164,7 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
               {type === "kreasi" && media.length > 0 ? (
                 <div className="mb-8">
                   {/* Main Media - Tanpa Badge */}
-                  <div className="relative w-full aspect-video rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden mb-4">
+                  <div className="relative w-full aspect-[16/8] rounded-2xl lg:rounded-3xl bg-gradient-to-br from-blue-100 to-purple-100 overflow-hidden mb-3">
                     {media[0].type === "video" ? (
                       <iframe
                         src={media[0].url}
@@ -184,10 +185,10 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
                   {/* Thumbnail Grid */}
                   {media.length > 1 && (
                     <div className="grid grid-cols-4 gap-2">
-                      {media.slice(1, 5).map((item, index) => (
+                      {media.slice(1, 4).map((item, index) => (
                         <div
                           key={index + 1}
-                          className="relative aspect-video rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                          className="relative aspect-[16/12] lg:aspect-video rounded-lg lg:rounded-2xl overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
                           onClick={() => openLightbox(index + 1)}
                         >
                           {item.type === "video" ? (
@@ -210,13 +211,23 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
                               className="w-full h-full object-cover"
                             />
                           )}
-                          {index === 3 && media.length > 5 && (
-                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-bold">
-                              +{media.length - 5}
-                            </div>
-                          )}
                         </div>
                       ))}
+
+                      {/* Tombol "Lihat Semua Foto" jika media > 4 */}
+                      {media.length > 4 && (
+                        <button
+                          onClick={() => openLightbox(1)}
+                          className="relative aspect-[16/12] lg:aspect-video rounded-lg lg:rounded-2xl overflow-hidden bg-blue-50 transition-all cursor-pointer group"
+                        >
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-blue-900">
+                            <Images className="w-4 h-4 mb-2 group-hover:scale-110 transition-transform" />
+                            <p className="text-[11px] lg:text-sm font-bold">
+                              Lihat Semua Foto
+                            </p>
+                          </div>
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -242,14 +253,14 @@ const DetailComponent: React.FC<ArticleDetailProps> = ({
               )}
 
               {/* Header Content */}
-              <div className="p-4 sm:p-8 lg:p-12">
+              <div className="p-4 sm:p-8 lg:p-12 lg:pt-10">
                 {/* Title */}
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-950 mb-6 leading-tight">
                   {title}
                 </h1>
 
                 {/* Meta Info with Icons */}
-                <div className="flex flex-wrap items-center gap-4 sm:gap-6 pb-8 mb-8 border-b-2 border-gray-100">
+                <div className="flex flex-wrap flex-col sm:flex-row lg:items-center gap-4 sm:gap-6 pb-8 mb-8 border-b-2 border-gray-100">
                   {/* Tanggal */}
                   <div className="flex items-center gap-2 text-gray-600">
                     <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">

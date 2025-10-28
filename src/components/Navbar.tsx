@@ -9,7 +9,17 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+
+  // Handle scroll effect for glassmorphism
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -71,23 +81,32 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-white lg:sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 md:px-10 py-3">
-          <div className="flex items-center justify-between gap-8">
-            {/* Logo */}
-            <Link href="/" className="flex items-center justify-center py-3">
+      <header
+        className={`lg:sticky top-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-gray-50/20 backdrop-blur-lg shadow-md"
+            : "bg-white shadow-sm"
+        }`}
+      >
+        <div className="container mx-auto px-4 md:px-6 lg:px-10 py-3">
+          <div className="flex items-center justify-between gap-4 lg:gap-8">
+            {/* Logo - Always visible and responsive */}
+            <Link
+              href="/"
+              className="flex items-center justify-center py-2 lg:py-3 shrink-0"
+            >
               <Image
                 src="/images/logoRukoku.png"
                 alt="RUKOKU Logo"
-                className="h-full object-contain"
+                className="h-10 md:h-12 lg:h-14 w-auto object-contain"
                 width={150}
                 height={50}
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8 flex-1 ml-20">
+            {/* Desktop Navigation - Hidden until lg */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-1 ml-8 xl:ml-20">
               {menuItems.map((item, index) => {
                 const itemIsActive = item.dropdown
                   ? isParentActive(item.dropdown)
@@ -98,7 +117,7 @@ const Navbar = () => {
                     {item.dropdown ? (
                       <>
                         <button
-                          className={`font-medium transition-colors duration-300 relative group flex items-center gap-1 ${
+                          className={`font-medium transition-colors duration-300 relative group flex items-center gap-1 text-sm xl:text-base ${
                             itemIsActive
                               ? "text-[#046DC2] font-bold"
                               : "text-gray-700 hover:text-[#046DC2]"
@@ -140,7 +159,7 @@ const Navbar = () => {
                     ) : (
                       <Link
                         href={item.href}
-                        className={`font-medium transition-colors duration-300 relative group ${
+                        className={`font-medium transition-colors duration-300 relative group text-sm xl:text-base ${
                           itemIsActive
                             ? "text-[#046DC2] font-bold"
                             : "text-gray-700 hover:text-[#046DC2]"
@@ -160,10 +179,10 @@ const Navbar = () => {
             </nav>
 
             {/* Right Actions - Desktop */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-4 xl:gap-8 shrink-0">
               <Link
                 href="/sahabat-peduli-anak"
-                className={`font-medium hidden lg:block transition-colors duration-300 whitespace-nowrap relative group ${
+                className={`font-medium transition-colors duration-300 whitespace-nowrap relative group text-sm xl:text-base ${
                   isActive("/sahabat-peduli-anak")
                     ? "text-[#046DC2] font-bold"
                     : "text-gray-700 hover:text-blue-600"
@@ -180,7 +199,7 @@ const Navbar = () => {
               </Link>
               <Link
                 href="/hope-care"
-                className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap hover:shadow-lg transform hover:scale-105"
+                className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white px-4 xl:px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap hover:shadow-lg transform hover:scale-105 text-sm xl:text-base"
               >
                 Hope & Care
               </Link>
@@ -189,7 +208,7 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMenu}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-300 relative z-[60]"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-300 relative z-[60] shrink-0"
               aria-label="Toggle menu"
             >
               {isOpen ? (
@@ -204,7 +223,7 @@ const Navbar = () => {
 
       {/* Mobile Sidebar Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-full bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-full bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

@@ -47,6 +47,14 @@ export const kreasiData: Record<string, KreasiData> = {
         type: "image",
         url: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80",
       },
+      {
+        type: "image",
+        url: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80",
+      },
+      {
+        type: "image",
+        url: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80",
+      },
     ],
     content: `
       <p class="text-lg font-medium text-gray-700 mb-6">

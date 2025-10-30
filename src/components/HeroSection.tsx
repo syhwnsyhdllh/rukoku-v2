@@ -15,7 +15,7 @@ interface HeroSectionProps {
     circle1?: string;
     circle2?: string;
   };
-  actions?: React.ReactNode; // 👈 New prop for actions (buttons, dropdowns, etc.)
+  actions?: React.ReactNode;
 }
 
 const HeroSection = ({
@@ -32,17 +32,17 @@ const HeroSection = ({
     circle1: "bg-white",
     circle2: "bg-purple-300",
   },
-  actions, // 👈 Destructure actions prop
+  actions,
 }: HeroSectionProps) => {
   return (
     <section
-      className="relative py-16 md:py-24 px-4 overflow-hidden lg:pt-10"
+      className="relative py-16 md:py-24 lg:px-20 overflow-hidden lg:pt-10 px-4"
       style={{ backgroundColor }}
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Text Content */}
-          <div className="space-y-6 z-10">
+          <div className="space-y-6 z-10 lg:-mt-16">
             <h1
               className={`text-3xl md:text-4xl lg:text-5xl font-bold ${titleColor}`}
             >
@@ -53,14 +53,13 @@ const HeroSection = ({
             >
               {description}
             </p>
-
-            {/* 👇 Actions slot - renders buttons, dropdowns, etc. */}
+            {/* Actions slot */}
             {actions && <div className="pt-4">{actions}</div>}
           </div>
 
           {/* Illustration */}
           <div className="relative flex justify-center md:justify-end">
-            <div className="relative w-full max-w-[390px] aspect-square">
+            <div className="relative w-full max-w-[280px] md:max-w-[320px] xl:max-w-[390px] aspect-square">
               {/* Hero Illustration */}
               <Image
                 src={imageSrc}
@@ -73,10 +72,10 @@ const HeroSection = ({
               {showDecorations && (
                 <>
                   <div
-                    className={`absolute -top-4 -right-4 w-20 h-20 ${decorationColors.circle1} rounded-full opacity-50 -z-10`}
+                    className={`absolute -top-4 -right-4 w-16 h-16 lg:w-20 lg:h-20 ${decorationColors.circle1} rounded-full opacity-50 -z-10`}
                   ></div>
                   <div
-                    className={`absolute -bottom-4 -left-4 w-12 h-12 ${decorationColors.circle2} rounded-full opacity-30 -z-10`}
+                    className={`absolute -bottom-4 -left-4 w-10 h-10 lg:w-12 lg:h-12 ${decorationColors.circle2} rounded-full opacity-30 -z-10`}
                   ></div>
                 </>
               )}
@@ -84,6 +83,7 @@ const HeroSection = ({
           </div>
         </div>
       </div>
+
       {/* Wave decoration */}
       {showWave && (
         <div className="absolute bottom-0 left-0 right-0">

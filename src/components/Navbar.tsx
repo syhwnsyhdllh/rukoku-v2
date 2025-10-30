@@ -88,7 +88,7 @@ const Navbar = () => {
             : "bg-white shadow-sm"
         }`}
       >
-        <div className="container mx-auto px-4 md:px-6 lg:px-10 py-3">
+        <div className="xl:container mx-auto px-4 md:px-6 lg:px-16 xl:px-10 py-3">
           <div className="flex items-center justify-between gap-4 lg:gap-8">
             {/* Logo - Always visible and responsive */}
             <Link
@@ -106,7 +106,7 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop Navigation - Hidden until lg */}
-            <nav className="hidden lg:flex items-center gap-3 xl:gap-6 flex-1 lg:ml-4 xl:ml-12 flex-nowrap">
+            <nav className="hidden lg:flex items-center gap-3 xl:gap-6 flex-1 lg:ml-4 xl:ml-6 flex-nowrap">
               {menuItems.map((item, index) => {
                 const itemIsActive = item.dropdown
                   ? isParentActive(item.dropdown)
@@ -179,7 +179,7 @@ const Navbar = () => {
             </nav>
 
             {/* Right Actions - Desktop */}
-            <div className="hidden lg:flex items-center gap-2 xl:gap-6 shrink-0">
+            <div className="hidden lg:flex items-center gap-2 lg:gap-4 xl:gap-6 shrink-0">
               <Link
                 href="/sahabat-peduli-anak"
                 className={`font-medium transition-colors duration-300 whitespace-nowrap relative group lg:text-[15px] xl:text-base ${
@@ -198,10 +198,25 @@ const Navbar = () => {
                 ></span>
               </Link>
               <Link
+                href="/sahabat-peduli-anak"
+                className={`font-medium transition-colors duration-300 whitespace-nowrap relative group lg:text-[15px] xl:text-base ${
+                  isActive("/")
+                    ? "text-[#046DC2] font-bold"
+                    : "text-gray-700 hover:text-blue-600"
+                }`}
+              >
+                Hope & Care
+                <span
+                  className={`absolute left-0 bottom-0 h-0.5 bg-[#046DC2] transition-all duration-300 ${
+                    isActive("/") ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </Link>
+              <Link
                 href="/hope-care"
                 className="bg-[#046DC2] hover:bg-[#1BA3E0] text-white lg:px-4 xl:px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap hover:shadow-lg transform hover:scale-105 lg:text-[15px] xl:text-base"
               >
-                Hope & Care
+                Masuk
               </Link>
             </div>
 

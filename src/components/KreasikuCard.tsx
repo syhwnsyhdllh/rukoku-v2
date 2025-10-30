@@ -75,9 +75,9 @@ const KreasikuCard = ({ kreasi }: KreasiCardProps) => {
 
   // Mapping warna ke class Tailwind yang lengkap
   const colorClasses: Record<string, string> = {
-    "bg-blue-500": "bg-blue-500",
+    "bg-blue-600": "bg-blue-600",
     "bg-cyan-500": "bg-cyan-500",
-    "bg-purple-500": "bg-purple-500",
+    "bg-red-500": "bg-red-500",
     "bg-orange-500": "bg-orange-500",
     "bg-gray-500": "bg-gray-500",
   };

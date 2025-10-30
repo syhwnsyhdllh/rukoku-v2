@@ -34,7 +34,7 @@ const HeroSection = ({
 }: HeroSectionProps) => {
   return (
     <section
-      className="relative py-16 md:py-24 px-4 overflow-hidden lg:pt-0"
+      className="relative py-16 md:py-24 px-4 overflow-hidden lg:pt-10"
       style={{ backgroundColor }}
     >
       <div className="max-w-7xl mx-auto">
@@ -52,9 +52,10 @@ const HeroSection = ({
               {description}
             </p>
           </div>
+
           {/* Illustration */}
           <div className="relative flex justify-center md:justify-end">
-            <div className="relative w-full max-w-md aspect-square">
+            <div className="relative w-full max-w-[390px] aspect-square">
               {/* Hero Illustration */}
               <Image
                 src={imageSrc}
@@ -63,14 +64,15 @@ const HeroSection = ({
                 className="object-contain animate-float"
                 priority
               />
+
               {/* Decorative elements */}
               {showDecorations && (
                 <>
                   <div
-                    className={`absolute -top-4 -right-4 w-24 h-24 ${decorationColors.circle1} rounded-full opacity-50 -z-10`}
+                    className={`absolute -top-4 -right-4 w-20 h-20 ${decorationColors.circle1} rounded-full opacity-50 -z-10`}
                   ></div>
                   <div
-                    className={`absolute -bottom-4 -left-4 w-16 h-16 ${decorationColors.circle2} rounded-full opacity-30 -z-10`}
+                    className={`absolute -bottom-4 -left-4 w-12 h-12 ${decorationColors.circle2} rounded-full opacity-30 -z-10`}
                   ></div>
                 </>
               )}
@@ -78,6 +80,7 @@ const HeroSection = ({
           </div>
         </div>
       </div>
+
       {/* Wave decoration */}
       {showWave && (
         <div className="absolute bottom-0 left-0 right-0">

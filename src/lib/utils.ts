@@ -18,11 +18,11 @@ export function cn(...inputs: ClassValue[]) {
 export const getSchoolBadgeColor = (school: string): string => {
   const schoolUpper = school.toUpperCase(); // Convert ke uppercase untuk matching
 
-  if (schoolUpper.includes("SD INPRES")) return "bg-cyan-500";
-  if (schoolUpper.includes("SDN")) return "bg-blue-500";
-  if (schoolUpper.includes("SMP")) return "bg-purple-500";
+  if (schoolUpper.includes("SD INPRES")) return "bg-orange-500";
+  if (schoolUpper.includes("SDN")) return "bg-red-500";
+  if (schoolUpper.includes("SMP")) return "bg-blue-600";
   if (schoolUpper.includes("TK") || schoolUpper.includes("PAUD"))
-    return "bg-orange-500";
+    return "bg-cyan-500";
 
   return "bg-gray-500"; // default color
 };

@@ -95,7 +95,7 @@ const Blog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <HeroSection
         title="Kabar dari RUKOKU"

@@ -73,7 +73,7 @@ const SchoolStats = ({ stats }: SchoolStatsProps) => {
   };
 
   return (
-    <div className="w-full min-h-screen  px-4">
+    <div className="w-full px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {schoolStats.map((stat) => (

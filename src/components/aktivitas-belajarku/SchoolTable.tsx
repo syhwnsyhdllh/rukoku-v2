@@ -156,74 +156,67 @@ const SchoolTable = ({ data }: SchoolTableProps) => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8 px-4">
+    <div className="w-full min-h-screen py-16 px-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Data Sekolah</h1>
+          <h1 className="text-3xl font-bold text-blue-950">Data Sekolah</h1>
           <p className="text-slate-600 mt-1">
             Kelola dan pantau data sekolah secara efisien
           </p>
         </div>
 
         {/* Search and Filter Card */}
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Search Input */}
-              <div className="flex-1 relative">
-                <Search
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
-                  size={20}
-                />
-                <Input
-                  type="text"
-                  placeholder="Cari berdasarkan judul, penulis, atau sekolah..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Search Input */}
+          <div className="flex-1 relative">
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 "
+              size={20}
+            />
+            <Input
+              type="text"
+              placeholder="Cari berdasarkan nama sekolah"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 max-w-md py-5 rounded-xl"
+            />
+          </div>
 
-              {/* Filters */}
-              <div className="flex gap-3">
-                <Select
-                  value={selectedFilter}
-                  onValueChange={setSelectedFilter}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Semua Sekolah" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Semua Sekolah</SelectItem>
-                    <SelectItem value="tk">TK/PAUD</SelectItem>
-                    <SelectItem value="sd">SD</SelectItem>
-                    <SelectItem value="smp">SMP</SelectItem>
-                    <SelectItem value="sma">SMA</SelectItem>
-                  </SelectContent>
-                </Select>
+          {/* Filters */}
+          <div className="flex gap-3">
+            <Select value={selectedFilter} onValueChange={setSelectedFilter}>
+              <SelectTrigger className="w-[180px] py-5 rounded-xl">
+                <SelectValue placeholder="Semua Sekolah" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Sekolah</SelectItem>
+                <SelectItem value="tk">TK/PAUD</SelectItem>
+                <SelectItem value="sdn">SD Negeri</SelectItem>
+                <SelectItem value="sdi">SD Inpres</SelectItem>
+                <SelectItem value="smp">SMP</SelectItem>
+              </SelectContent>
+            </Select>
 
-                <Select
-                  value={itemsPerPage}
-                  onValueChange={(value) => {
-                    setItemsPerPage(value);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger className="w-[160px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10 per halaman</SelectItem>
-                    <SelectItem value="25">25 per halaman</SelectItem>
-                    <SelectItem value="50">50 per halaman</SelectItem>
-                    <SelectItem value="100">100 per halaman</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            <Select
+              value={itemsPerPage}
+              onValueChange={(value) => {
+                setItemsPerPage(value);
+                setCurrentPage(1);
+              }}
+            >
+              <SelectTrigger className="w-[160px] py-5 rounded-xl">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10 per halaman</SelectItem>
+                <SelectItem value="25">25 per halaman</SelectItem>
+                <SelectItem value="50">50 per halaman</SelectItem>
+                <SelectItem value="100">100 per halaman</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
         {/* Table Card */}
         <Card>

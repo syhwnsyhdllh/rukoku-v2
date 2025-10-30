@@ -15,6 +15,7 @@ interface HeroSectionProps {
     circle1?: string;
     circle2?: string;
   };
+  actions?: React.ReactNode; // 👈 New prop for actions (buttons, dropdowns, etc.)
 }
 
 const HeroSection = ({
@@ -31,6 +32,7 @@ const HeroSection = ({
     circle1: "bg-white",
     circle2: "bg-purple-300",
   },
+  actions, // 👈 Destructure actions prop
 }: HeroSectionProps) => {
   return (
     <section
@@ -51,6 +53,9 @@ const HeroSection = ({
             >
               {description}
             </p>
+
+            {/* 👇 Actions slot - renders buttons, dropdowns, etc. */}
+            {actions && <div className="pt-4">{actions}</div>}
           </div>
 
           {/* Illustration */}
@@ -64,7 +69,6 @@ const HeroSection = ({
                 className="object-contain animate-float"
                 priority
               />
-
               {/* Decorative elements */}
               {showDecorations && (
                 <>
@@ -80,7 +84,6 @@ const HeroSection = ({
           </div>
         </div>
       </div>
-
       {/* Wave decoration */}
       {showWave && (
         <div className="absolute bottom-0 left-0 right-0">

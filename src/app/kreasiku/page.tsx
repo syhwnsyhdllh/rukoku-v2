@@ -1,3 +1,4 @@
+// app/kreasiku/page.tsx
 "use client";
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import HeroSection from "@/components/HeroSection";
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getKreasiList } from "@/lib/kreasiData";
+import { HeroActions } from "@/components/kreasiku/HeroActions";
 
 const Kreasiku = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -135,6 +137,7 @@ const Kreasiku = () => {
         description="Kumpulan tugas-tugas atau proyek belajar yang diberikan oleh guru di sekolah yang dikerjakan langsung oleh siswa."
         imageSrc="/images/ilustrasi/Kreasiku.png"
         imageAlt="Dinas pendidikan"
+        actions={<HeroActions />} // 👈 Tambahkan actions dengan button "Buat Aktivitas"
       />
 
       {/* Filter & Search Section */}

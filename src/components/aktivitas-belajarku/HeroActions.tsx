@@ -1,4 +1,3 @@
-// components/aktivitas-belajarku/HeroActions.tsx
 "use client";
 import { useState } from "react";
 import {
@@ -9,24 +8,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "lucide-react";
+import { districts } from "@/lib/sekolahData";
 
 interface HeroActionsProps {
-  onSchoolChange?: (school: string) => void;
+  onDistrictChange?: (districtId: string) => void;
 }
 
-export const HeroActions = ({ onSchoolChange }: HeroActionsProps) => {
-  const [selectedSchool, setSelectedSchool] = useState<string>("all");
+export const HeroActions = ({ onDistrictChange }: HeroActionsProps) => {
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("all");
 
-  const handleSchoolChange = (value: string) => {
-    setSelectedSchool(value);
-    onSchoolChange?.(value);
+  const handleDistrictChange = (value: string) => {
+    setSelectedDistrict(value);
+    onDistrictChange?.(value);
   };
 
   return (
     <div className="w-full sm:w-auto">
       {/* Dropdown Filter Sekolah */}
-      <Select value={selectedSchool} onValueChange={handleSchoolChange}>
-        <SelectTrigger className="w-full sm:w-64 h-12 rounded-xl bg-white border-none">
+      <Select value={selectedDistrict} onValueChange={handleDistrictChange}>
+        <SelectTrigger className="w-full sm:w-64 h-12 rounded-xl bg-white border-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-500" />
             <SelectValue placeholder="Pilih Kecamatan" />
@@ -34,18 +34,11 @@ export const HeroActions = ({ onSchoolChange }: HeroActionsProps) => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Semua Kecamatan</SelectItem>
-          <SelectItem value="bajeng">Bajeng</SelectItem>
-          <SelectItem value="bajeng-barat">Bajeng Barat</SelectItem>
-          <SelectItem value="barombong">Barombong</SelectItem>
-          <SelectItem value="biringbulu">Biringbulu</SelectItem>
-          <SelectItem value="bontolempangan">Bontolempangan</SelectItem>
-          <SelectItem value="bontomarannu">Bontomarannu</SelectItem>
-          <SelectItem value="bontonompo">Bontonompo</SelectItem>
-          <SelectItem value="bontonomp-selatan">Bontonompo Selatan</SelectItem>
-          <SelectItem value="bungaya">Bungaya</SelectItem>
-          <SelectItem value="manuju">Manuju</SelectItem>
-          <SelectItem value="pallangga">Pallangga</SelectItem>
-          <SelectItem value="parangloe">Parangloe</SelectItem>
+          {districts.map((district) => (
+            <SelectItem key={district.id} value={district.id}>
+              {district.name}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

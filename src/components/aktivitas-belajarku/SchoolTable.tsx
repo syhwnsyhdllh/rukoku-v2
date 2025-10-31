@@ -26,78 +26,20 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-
-interface SchoolData {
-  id: number;
-  name: string;
-  type: "tk" | "sdn" | "sdi" | "smp";
-  studentCount: number;
-  teacherCount: number;
-  totalParticipants: number;
-}
+import { getSchoolsByDistrict, type SchoolData } from "@/lib/sekolahData";
 
 interface SchoolTableProps {
   data?: SchoolData[];
+  districtId?: string;
 }
 
-const SchoolTable = ({ data }: SchoolTableProps) => {
+const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState("10");
 
-  const defaultData: SchoolData[] = [
-    {
-      id: 1,
-      name: "TK/PAUD Kartika 1",
-      type: "tk",
-      studentCount: 50,
-      teacherCount: 10,
-      totalParticipants: 20,
-    },
-    {
-      id: 2,
-      name: "TK/PAUD Kartika 2",
-      type: "tk",
-      studentCount: 30,
-      teacherCount: 10,
-      totalParticipants: 30,
-    },
-    {
-      id: 3,
-      name: "SD Negeri Mangasa",
-      type: "sdn",
-      studentCount: 30,
-      teacherCount: 20,
-      totalParticipants: 40,
-    },
-    {
-      id: 4,
-      name: "SD Negeri Mangasa 1",
-      type: "sdn",
-      studentCount: 40,
-      teacherCount: 24,
-      totalParticipants: 30,
-    },
-    {
-      id: 5,
-      name: "SD Inpres Mangasa",
-      type: "sdi",
-      studentCount: 30,
-      teacherCount: 20,
-      totalParticipants: 40,
-    },
-    {
-      id: 6,
-      name: "SMP 4 Mangasa",
-      type: "smp",
-      studentCount: 20,
-      teacherCount: 14,
-      totalParticipants: 40,
-    },
-  ];
-
-  const schoolData = data || defaultData;
+  const schoolData = data || getSchoolsByDistrict(districtId);
 
   // Filter data berdasarkan search dan type
   const filteredData = schoolData.filter((school) => {
@@ -197,14 +139,14 @@ const SchoolTable = ({ data }: SchoolTableProps) => {
               placeholder="Cari berdasarkan nama sekolah"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
-              className="pl-10 py-5 max-w-md rounded-xl"
+              className="pl-10 py-5 max-w-md rounded-xl "
             />
           </div>
 
           {/* Filters */}
           <div className="flex gap-3">
             <Select value={selectedFilter} onValueChange={handleFilterChange}>
-              <SelectTrigger className="w-full md:w-[180px] py-5 rounded-xl">
+              <SelectTrigger className="w-full md:w-[180px] py-5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
                 <SelectValue placeholder="Semua Sekolah" />
               </SelectTrigger>
               <SelectContent>

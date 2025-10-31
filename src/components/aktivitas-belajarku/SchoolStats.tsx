@@ -4,6 +4,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { getDistrictStats } from "@/lib/sekolahData";
 
 interface SchoolStat {
   id: number;
@@ -16,14 +17,17 @@ interface SchoolStat {
 
 interface SchoolStatsProps {
   stats?: SchoolStat[];
+  districtId?: string;
 }
 
-const SchoolStats = ({ stats }: SchoolStatsProps) => {
+const SchoolStats = ({ stats, districtId = "all" }: SchoolStatsProps) => {
+  const districtStats = getDistrictStats(districtId);
+
   const defaultStats: SchoolStat[] = [
     {
       id: 1,
       label: "Taman Kanak-Kanak",
-      count: 100,
+      count: districtStats.totalTK,
       icon: "tk",
       iconColor: "text-cyan-500",
       bgColor: "bg-cyan-50",
@@ -31,7 +35,7 @@ const SchoolStats = ({ stats }: SchoolStatsProps) => {
     {
       id: 2,
       label: "Sekolah Dasar Negeri",
-      count: 100,
+      count: districtStats.totalSDN,
       icon: "sdn",
       iconColor: "text-red-400",
       bgColor: "bg-red-50",
@@ -39,7 +43,7 @@ const SchoolStats = ({ stats }: SchoolStatsProps) => {
     {
       id: 3,
       label: "Sekolah Dasar Inpres",
-      count: 200,
+      count: districtStats.totalSDI,
       icon: "sdi",
       iconColor: "text-orange-400",
       bgColor: "bg-orange-50",
@@ -47,7 +51,7 @@ const SchoolStats = ({ stats }: SchoolStatsProps) => {
     {
       id: 4,
       label: "Sekolah Menengah Pertama",
-      count: 100,
+      count: districtStats.totalSMP,
       icon: "smp",
       iconColor: "text-indigo-400",
       bgColor: "bg-indigo-50",

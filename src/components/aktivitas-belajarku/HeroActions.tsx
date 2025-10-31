@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -11,20 +10,26 @@ import { Filter } from "lucide-react";
 import { districts } from "@/lib/sekolahData";
 
 interface HeroActionsProps {
+  selectedDistrict: string; // ✅ Tambahkan ini
   onDistrictChange?: (districtId: string) => void;
 }
 
-export const HeroActions = ({ onDistrictChange }: HeroActionsProps) => {
-  const [selectedDistrict, setSelectedDistrict] = useState<string>("all");
+export const HeroActions = ({
+  selectedDistrict, // ✅ Tambahkan ini
+  onDistrictChange,
+}: HeroActionsProps) => {
+  // ❌ HAPUS state lokal ini (karena sudah di parent):
+  // const [selectedDistrict, setSelectedDistrict] = useState<string>("all");
 
   const handleDistrictChange = (value: string) => {
-    setSelectedDistrict(value);
+    // ❌ HAPUS: setSelectedDistrict(value);
+    // ✅ Langsung panggil callback ke parent
     onDistrictChange?.(value);
   };
 
   return (
     <div className="w-full sm:w-auto">
-      {/* Dropdown Filter Sekolah */}
+      {/* Dropdown Filter Kecamatan */}
       <Select value={selectedDistrict} onValueChange={handleDistrictChange}>
         <SelectTrigger className="w-full sm:w-64 h-12 rounded-xl bg-white border-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
           <div className="flex items-center gap-2">

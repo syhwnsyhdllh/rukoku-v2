@@ -1,4 +1,3 @@
-// app/aktivitas-belajarku/page.tsx
 "use client";
 import { useState } from "react";
 import SchoolStats from "@/components/aktivitas-belajarku/SchoolStats";
@@ -7,13 +6,13 @@ import HeroSection from "@/components/HeroSection";
 import { HeroActions } from "@/components/aktivitas-belajarku/HeroActions";
 
 const AktivitasBelajarku = () => {
-  const [selectedSchool, setSelectedSchool] = useState<string>("all");
+  // ✅ State untuk menyimpan kecamatan yang dipilih
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("all");
 
-  const handleSchoolChange = (school: string) => {
-    setSelectedSchool(school);
-    console.log("Filter data by school:", school);
-    // TODO: Implementasi filter logic
-    // Bisa trigger refetch data atau filter data yang sudah ada
+  // ✅ Handler ketika dropdown kecamatan berubah
+  const handleDistrictChange = (districtId: string) => {
+    setSelectedDistrict(districtId);
+    console.log("Filter data by district:", districtId);
   };
 
   return (
@@ -23,12 +22,17 @@ const AktivitasBelajarku = () => {
         description="Berisi kumpulan berbagai kegiatan belajar yang dilakukan oleh siswa, baik di sekolah maupun di rumah, yang mencerminkan semangat, kreativitas, dan proses pembelajaran mereka sehari-hari."
         imageSrc="/images/ilustrasi/aktivitasSekolahku.png"
         imageAlt="Aktivitas Belajar"
-        actions={<HeroActions onSchoolChange={handleSchoolChange} />}
+        actions={
+          <HeroActions
+            selectedDistrict={selectedDistrict}
+            onDistrictChange={handleDistrictChange}
+          />
+        }
       />
 
-      {/* Pass selectedSchool ke components yang membutuhkan filter */}
-      <SchoolStats />
-      <SchoolTable />
+      {/* ✅ Pass selectedDistrict ke components yang membutuhkan filter */}
+      <SchoolStats districtId={selectedDistrict} />
+      <SchoolTable districtId={selectedDistrict} />
     </div>
   );
 };

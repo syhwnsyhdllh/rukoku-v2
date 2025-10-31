@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   Users,
@@ -38,6 +38,11 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState("10");
+
+  // ✅ TAMBAHKAN: Reset pagination ketika districtId berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [districtId]);
 
   const schoolData = data || getSchoolsByDistrict(districtId);
 

@@ -27,6 +27,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getSchoolsByDistrict, type SchoolData } from "@/lib/sekolahData";
+import { LoginModal } from "./LoginModal";
 
 interface SchoolTableProps {
   data?: SchoolData[];
@@ -39,14 +40,16 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState("10");
 
-  // ✅ TAMBAHKAN: Reset pagination ketika districtId berubah
+  // ✅ State untuk modal login
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [selectedSchool, setSelectedSchool] = useState<SchoolData | null>(null);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [districtId]);
 
   const schoolData = data || getSchoolsByDistrict(districtId);
 
-  // Filter data berdasarkan search dan type
   const filteredData = schoolData.filter((school) => {
     const matchesSearch = school.name
       .toLowerCase()
@@ -56,14 +59,12 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
     return matchesSearch && matchesFilter;
   });
 
-  // Pagination calculations
   const itemsPerPageNum = parseInt(itemsPerPage);
   const totalPages = Math.ceil(filteredData.length / itemsPerPageNum);
   const startIndex = (currentPage - 1) * itemsPerPageNum;
   const endIndex = startIndex + itemsPerPageNum;
   const currentData = filteredData.slice(startIndex, endIndex);
 
-  // Reset ke halaman 1 saat search atau filter berubah
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
@@ -74,7 +75,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
     setCurrentPage(1);
   };
 
-  // Pagination handlers
   const goToPage = (page: number) => {
     setCurrentPage(page);
   };
@@ -87,7 +87,12 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  // Generate page numbers untuk pagination
+  // ✅ Handler untuk klik nama sekolah
+  const handleSchoolClick = (school: SchoolData) => {
+    setSelectedSchool(school);
+    setIsLoginModalOpen(true);
+  };
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -121,7 +126,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
   return (
     <div className="w-full min-h-screen py-8 md:py-16 xl:px-4 lg:px-20 px-4">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-blue-950">
             Data Sekolah
@@ -131,9 +135,7 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
           </p>
         </div>
 
-        {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-          {/* Search Input */}
           <div className="flex-1 relative">
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
@@ -148,7 +150,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
             />
           </div>
 
-          {/* Filters */}
           <div className="flex gap-3">
             <Select value={selectedFilter} onValueChange={handleFilterChange}>
               <SelectTrigger className="w-full md:w-[180px] py-5 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
@@ -183,7 +184,7 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
           </div>
         </div>
 
-        {/* Desktop Table View - Hidden on mobile */}
+        {/* Desktop Table View */}
         <div className="hidden lg:block">
           <Card>
             <CardContent className="p-0">
@@ -225,7 +226,10 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col gap-1">
-                            <h3 className="text-md font-medium text-blue-600 cursor-pointer hover:text-blue-700">
+                            <h3
+                              onClick={() => handleSchoolClick(school)}
+                              className="text-md font-medium text-blue-600 cursor-pointer hover:text-blue-700 hover:underline"
+                            >
                               {school.name}
                             </h3>
                           </div>
@@ -262,7 +266,7 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
           </Card>
         </div>
 
-        {/* Mobile Card View - Hidden on desktop */}
+        {/* Mobile Card View */}
         <div className="lg:hidden space-y-4">
           {currentData.length > 0 ? (
             currentData.map((school, index) => (
@@ -272,21 +276,22 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
               >
                 <CardContent className="p-4">
                   <div className="space-y-3">
-                    {/* Header with number and name */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1">
                         <div className="flex items-baseline gap-2">
                           <span className="text-lg font-bold text-slate-700">
                             {startIndex + index + 1}.
                           </span>
-                          <h3 className="text-md lg:text-lg font-semibold text-blue-600 cursor-pointer hover:text-blue-700">
+                          <h3
+                            onClick={() => handleSchoolClick(school)}
+                            className="text-md lg:text-lg font-semibold text-blue-600 cursor-pointer hover:text-blue-700 hover:underline"
+                          >
                             {school.name}
                           </h3>
                         </div>
                       </div>
                     </div>
 
-                    {/* Stats */}
                     <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
@@ -313,7 +318,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
                       </div>
                     </div>
 
-                    {/* Total */}
                     <div className="pt-3 border-t border-slate-100">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -350,7 +354,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
           <Card>
             <CardContent className="p-4">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                {/* Info */}
                 <div className="text-xs md:text-sm text-slate-600">
                   Menampilkan{" "}
                   <span className="font-medium">{startIndex + 1}</span> -{" "}
@@ -362,9 +365,7 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
                   data
                 </div>
 
-                {/* Pagination Controls */}
                 <div className="flex items-center gap-2">
-                  {/* Previous Button */}
                   <Button
                     variant="outline"
                     size="icon"
@@ -375,7 +376,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
                     <ChevronLeft size={16} className="md:w-5 md:h-5" />
                   </Button>
 
-                  {/* Page Numbers */}
                   <div className="flex gap-1">
                     {getPageNumbers().map((page, index) => (
                       <Button
@@ -397,7 +397,6 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
                     ))}
                   </div>
 
-                  {/* Next Button */}
                   <Button
                     variant="outline"
                     size="icon"
@@ -413,6 +412,16 @@ const SchoolTable = ({ data, districtId = "all" }: SchoolTableProps) => {
           </Card>
         )}
       </div>
+
+      {/* ✅ Login Modal */}
+      {selectedSchool && (
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          schoolName={selectedSchool.name}
+          schoolId={selectedSchool.id}
+        />
+      )}
     </div>
   );
 };
